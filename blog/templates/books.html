@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>小书屋-零度</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../static/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
+	</head>
+	<body class="landing">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="../">零度</a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="../home">主页</a></li>
+							<li>
+								<a href="../articles">文章列表</a>
+							</li>
+							<li><a href="../books">小书屋</a></li>
+							<li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
+								{% if num <= 1 %}
+								<ul>
+									<li><a href="{{ url }}">个人信息</a></li>
+									<li><a href="../blog_logout" >Logout</a></li>
+								</ul>
+								{% endif %}
+							</li>
+						</ul>
+					</nav>
+				</header>
+
+                <div id="main" class="wrapper style1">
+					<div class="container">
+						<header class="major">
+							<h2>小书屋</h2>
+							<p>分享一些计算机相关的书籍</p>
+						</header>
+						<div class="row 150%">
+							<div class="8u 12u$(medium)">
+									<section id="content">
+                                        {% for book in books %}
+                                        <span class=""><img src="{{ book.imgurl }}" alt="" style="width:200px;height:200px;" /></span>
+                                        <h3><a href="../book?bookid={{ book.id }}">{{ book.title }}</a></h3>
+                                        <p><a href="../category?key={{ book.category }}">{{ book.category }}</a> | {{ article.date }}</p>
+                                        <p>{{ book.introduction }}</p>
+                                        <p><a href="../book?articleid={{ book.id }}">查看更多</a><p>
+                                        <hr>
+                                        {% endfor %}
+									</section>
+                                    <a href="../books?page={{ prepage }}&num=6" class="button special">上一页</a>
+                                    <a href="../books?page={{ nextpage }}&num=6" class="button special">下一页</a>
+							</div>
+                            <div class="4u$ 12u$(medium)">
+                                <!-- Sidebar -->
+                                    <hr>
+                                    <section id="sidebar">
+                                        <p></p>
+                                        <section>
+                                            <h3>标签</h3>
+                                            <p>
+                                                {% for key,value in categorys.items %}
+                                                <a href="../categorys?key={{ key }}" style="font-size: {{ value }}pt;">{{ key }}</a>
+                                                {% endfor %}
+                                            </p>
+                                            <footer>
+                                                <ul class="actions">
+                                                    <li><a href="../articles" class="button">Learn More</a></li>
+                                                </ul>
+                                            </footer>
+                                        </section>
+
+                            </div>
+						</div>
+					</div>
+				</div>
+
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="icons">
+						<li><a href="https://github.com/Nyloner" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+						<li><a href="" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>&copy; nyloner.cn. All rights reserved.</li>
+						<li>Github: <a href="https://github.com/Nyloner" >Nyloner</a></li>
+						<li>Email: nyloner.root@gmail.com</li>
+						<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</footer>
+		</div>
+
+		<!-- Scripts -->
+			<script src="../static/js/jquery.min.js"></script>
+			<script src="../static/js/jquery.scrolly.min.js"></script>
+			<script src="../static/js/jquery.dropotron.min.js"></script>
+			<script src="../static/js/jquery.scrollex.min.js"></script>
+			<script src="../static/js/skel.min.js"></script>
+			<script src="../static/js/util.js"></script>
+			<!--[if lte IE 8]><script src="../static/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../static/js/main.js"></script>
+	</body>
+</html>
