@@ -1,11 +1,15 @@
 from blog.models import Article
 from blog.models import Book
 
-def get_article(page,num):
+def get_articles(page,num):
     fromnum=(page-1)*(num-1)
     tonum=page*(num)
     result=Article.objects.order_by('-pub_date').all()[fromnum:tonum]
     return result
+
+def get_article(articleid):
+    article=Article.objects.filter(id=articleid)[0]
+    return article
 
 def get_category():
     result={}

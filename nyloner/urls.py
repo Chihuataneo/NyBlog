@@ -25,4 +25,8 @@ urlpatterns = [
     url(r'^userinfor/','blog.views.userinfor'),
     url(r'^articles','blog.views.articles'),
     url(r'^books','blog.views.books'),
+    url(r'^article','blog.views.article'),
+    url(r'^book','blog.views.book'),
+    url(r'^content','blog.views.article_content'),
+    url(r'^categorys','blog.views.categorys'),
 ]

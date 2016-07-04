@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>小书屋-零度</title>
+		<title>文章列表-零度</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
@@ -38,23 +38,21 @@
                 <div id="main" class="wrapper style1">
 					<div class="container">
 						<header class="major">
-							<h2>小书屋</h2>
-							<p>分享一些计算机相关的书籍</p>
+							<h2>文章列表</h2>
 						</header>
 						<div class="row 150%">
 							<div class="8u 12u$(medium)">
 									<section id="content">
-                                        {% for book in books %}
-                                        <span class=""><img src="{{ book.imgurl }}" alt="" style="width:200px;height:200px;" /></span>
-                                        <h3><a href="../book?bookid={{ book.id }}">{{ book.title }}</a></h3>
-                                        <p><a href="../category?key={{ book.category }}">{{ book.category }}</a> | {{ book.date }}</p>
-                                        <p>{{ book.introduction }}</p>
-                                        <p><a href="../book?bookid={{ book.id }}">查看更多</a><p>
+                                        {% for article in articles %}
+                                        <h3><a href="../article?articleid={{ article.id }}">{{ article.title }}</a></h3>
+                                        <p><a href="../category?key={{ article.category }}">{{ article.category }}</a> | {{ article.date }}</p>
+                                        <p>{{ article.introduction }}</p>
+                                        <p><a href="../article?articleid={{ article.id }}">查看更多</a><p>
                                         <hr>
                                         {% endfor %}
 									</section>
-                                    <a href="../books?page={{ prepage }}&num=6" class="button special">上一页</a>
-                                    <a href="../books?page={{ nextpage }}&num=6" class="button special">下一页</a>
+                                    <a href="../articles?page={{ prepage }}&num=6" class="button special">上一页</a>
+                                    <a href="../articles?page={{ nextpage }}&num=6" class="button special">下一页</a>
 							</div>
                             <div class="4u$ 12u$(medium)">
                                 <!-- Sidebar -->
@@ -70,7 +68,7 @@
                                             </p>
                                             <footer>
                                                 <ul class="actions">
-                                                    <li><a href="../articles" class="button">Learn More</a></li>
+                                                    <li><a href="../categorys" class="button">Learn More</a></li>
                                                 </ul>
                                             </footer>
                                         </section>

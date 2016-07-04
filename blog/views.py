@@ -26,7 +26,7 @@ def index(request):
 
 def home(request):
     loginvalue=islogin(request)
-    result=get_article(page=1,num=2)
+    result=get_articles(page=1,num=2)
     articles=[]
     for item in result:
         article={}
@@ -103,19 +103,78 @@ def books(request):
         book['title']=item.title
         book['introduction']=item.introduction[:80]+"..."
         book['imgurl']=item.imgurl
+        book['category']=item.category
+        book['date']=item.pub_date
         books.append(book)
     categorys=get_category()
     return render(request, 'books.html', {'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'books':books,'prepage':prepage,'nextpage':nextpage})
 
-
 def articles(request):
-    return home(request)
+    loginvalue=islogin(request)
+    try:
+        page=int(request.GET['page'])
+        num=int(request.GET['num'])
+    except:
+        page=1
+        num=6
+    if page<=1:
+        prepage=1
+    else:
+        prepage=page-1
+    nextpage=page+1
+    result=get_articles(page,num)
+    articles=[]
+    for item in result:
+        article={}
+        article['id']=item.id
+        article['title']=item.title
+        article['category']=item.category
+        article['introduction']=item.introduction
+        article['date']=item.pub_date
+        articles.append(article)
+    categorys=get_category()
+    return render(request, 'articles.html', {'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'articles':articles,'prepage':prepage,'nextpage':nextpage})
+
 
 def userinfor(request):
     return home(request)
-    
+
 def book(request):
-    return home(request)
+    try:
+        bookid=request.GET['bookid']
+        bookid=int(bookid)
+    except:
+        return books(request)
+    loginvalue=islogin(request)
+    item=get_book(bookid)
+    book={}
+    book['id']=item.id
+    book['title']=item.title
+    book['introduction']=item.introduction[:80]+"..."
+    book['imgurl']=item.imgurl
+    book['category']=item.category
+    book['date']=item.pub_date
+    book['downloadurl']=item.downloadurl
+    return render(request, 'book.html',{'book':book,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def article(request):
+    try:
+        articleid=request.GET['articleid']
+    except:
+        return articles(request)
+    loginvalue=islogin(request)
+    item=get_article(articleid)
+    article={}
+    article['id']=item.id
+    article['title']=item.title
+    article['category']=item.category
+    article['date']=item.pub_date
+    return render(request, 'article.html',{'article':article,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def article_content(request):
+    id=request.GET['id']
+    item=get_article(id)
+    return HttpResponse(item.content)
+
+def categorys(request):
     return home(request)

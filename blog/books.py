@@ -6,3 +6,7 @@ def get_books(page,num):
     tonum=page*(num)
     result=Book.objects.order_by('-pub_date').all()[fromnum:tonum]
     return result
+
+def get_book(bookid):
+    book=Book.objects.filter(id=bookid)[0]
+    return book
