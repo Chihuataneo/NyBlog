@@ -40,7 +40,11 @@
                         <div class="container">
                             <header class="major">
                                 <h2>{{ book.title }}</h2>
-                                <p><a href="../categorys?key={{ book.category }}">{{ book.category }}</a> | {{ book.date }}</p>
+								<p>
+									{% for category in book.categorys %}
+									<a href="../categorys?key={{ category }}">{{ category }}</a>
+									{% endfor %}
+									| {{ book.date }}</p>
                             </header>
                             <!-- Content -->
                             <div class="">

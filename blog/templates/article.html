@@ -40,7 +40,11 @@
                         <div class="container">
                             <header class="major">
                                 <h2>{{ article.title }}</h2>
-                                <p><a href="../categorys?key={{ article.category }}">{{ article.category }}</a> | {{ article.date }}</p>
+								<p>
+									{% for category in article.categorys %}
+									<a href="../categorys?key={{ category }}">{{ category }}</a>
+									{% endfor %}
+									| {{ article.date }}</p>
                             </header>
                             <!-- Content -->
                             <div class="">
