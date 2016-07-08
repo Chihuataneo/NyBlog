@@ -182,7 +182,7 @@ def categorys(request):
     except:
         key=""
     try:
-        page=request.GET('page')
+        page=int(request.GET['page'])
     except:
         page=1
     if page<=1:
@@ -190,6 +190,7 @@ def categorys(request):
     else:
         prepage=page-1
     nextpage=page+1
+    print(nextpage)
     articles=get_articles_by_category(key)
     books=get_books_by_categoty(key)
     result=[]
