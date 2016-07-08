@@ -47,7 +47,11 @@
                                         {% for book in books %}
                                         <span class=""><img src="{{ book.imgurl }}" alt="" style="width:200px;height:200px;" /></span>
                                         <h3><a href="../book?bookid={{ book.id }}">{{ book.title }}</a></h3>
-                                        <p><a href="../category?key={{ book.category }}">{{ book.category }}</a> | {{ book.date }}</p>
+                                        <p>
+											{% for category in book.categorys %}
+											<a href="../categorys?key={{ category }}">{{ category }}</a>
+											{% endfor %}
+											| {{ book.date }}</p>
                                         <p>{{ book.introduction }}</p>
                                         <p><a href="../book?bookid={{ book.id }}">查看更多</a><p>
                                         <hr>
@@ -70,11 +74,10 @@
                                             </p>
                                             <footer>
                                                 <ul class="actions">
-                                                    <li><a href="../articles" class="button">Learn More</a></li>
+                                                    <li><a href="../categorys" class="button">Learn More</a></li>
                                                 </ul>
                                             </footer>
                                         </section>
-
                             </div>
 						</div>
 					</div>

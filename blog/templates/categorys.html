@@ -34,29 +34,35 @@
 						</ul>
 					</nav>
 				</header>
-
                 <div id="main" class="wrapper style1">
 					<div class="container">
 						<header class="major">
-							<h2>文章列表</h2>
+							<h2>分类列表</h2>
 						</header>
 						<div class="row 150%">
 							<div class="8u 12u$(medium)">
+                                    <span><a href="../categorys">分类列表</a>
+                                        <span>>></span>
+                                        <a href="../categorys?key={{ key }}">{{ key }}</a>
+                                    </span>
+                                    <p>
+                                        -------------------------------------------------------------
+                                    </p>
 									<section id="content">
-                                        {% for article in articles %}
-                                        <h3><a href="../article?articleid={{ article.id }}">{{ article.title }}</a></h3>
+                                        {% for item in items %}
+                                        <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
                                         <p>
-											{% for category in article.categorys %}
+											{% for category in item.categorys %}
 											<a href="../categorys?key={{ category }}">{{ category }}</a>
 											{% endfor %}
-											| {{ article.date }}</p>
-                                        <p>{{ article.introduction }}</p>
-                                        <p><a href="../article?articleid={{ article.id }}">查看更多</a><p>
+											| {{ item.date }}</p>
+                                        <p>{{ item.introduction }}</p>
+                                        <p><a href="{{ item.url }}">查看更多</a><p>
                                         <hr>
                                         {% endfor %}
 									</section>
-                                    <a href="../articles?page={{ prepage }}&num=6" class="button special">上一页</a>
-                                    <a href="../articles?page={{ nextpage }}&num=6" class="button special">下一页</a>
+                                    <a href="../categorys?key={{ key }}&page={{ prepage }}" class="button special">上一页</a>
+                                    <a href="../categorys?key={{ key }}&page={{ nextpage }}" class="button special">下一页</a>
 							</div>
                             <div class="4u$ 12u$(medium)">
                                 <!-- Sidebar -->

@@ -60,7 +60,11 @@
 										<section id="content">
 											{% for article in articles %}
 											<h3><a href="../article?articleid={{ article.id }}">{{ article.title }}</a></h3>
-											<p><a href="../category?key={{ article.category }}">{{ article.category }}</a> | {{ article.date }}</p>
+											<p>
+												{% for category in article.categorys %}
+												<a href="../categorys?key={{ category }}">{{ category }}</a>
+												{% endfor %}
+												| {{ article.date }}</p>
 											<p>{{ article.introduction }}</p>
 											<p><a href="../article?articleid={{ article.id }}">查看更多</a><p>
 											{% endfor %}

@@ -10,6 +10,13 @@ def get_articles(page,num):
 def get_article(articleid):
     article=Article.objects.filter(id=articleid)[0]
     return article
+def get_articles_by_category(category):
+    articles=Article.objects.order_by('-pub_date').all()
+    result=[]
+    for item in articles:
+        if category in item.category:
+            result.append(item)
+    return result
 
 def get_category():
     result={}

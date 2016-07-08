@@ -32,7 +32,7 @@ def home(request):
         article={}
         article['id']=item.id
         article['title']=item.title
-        article['category']=item.category
+        article['categorys']=item.category.split(',')
         article['introduction']=item.introduction
         article['date']=item.pub_date
         articles.append(article)
@@ -103,7 +103,7 @@ def books(request):
         book['title']=item.title
         book['introduction']=item.introduction[:80]+"..."
         book['imgurl']=item.imgurl
-        book['category']=item.category
+        book['categorys']=item.category.split(',')
         book['date']=item.pub_date
         books.append(book)
     categorys=get_category()
@@ -128,7 +128,7 @@ def articles(request):
         article={}
         article['id']=item.id
         article['title']=item.title
-        article['category']=item.category
+        article['categorys']=item.category.split(',')
         article['introduction']=item.introduction
         article['date']=item.pub_date
         articles.append(article)
@@ -150,9 +150,9 @@ def book(request):
     book={}
     book['id']=item.id
     book['title']=item.title
-    book['introduction']=item.introduction[:80]+"..."
+    book['introduction']=item.introduction
     book['imgurl']=item.imgurl
-    book['category']=item.category
+    book['categorys']=item.category.split(',')
     book['date']=item.pub_date
     book['downloadurl']=item.downloadurl
     return render(request, 'book.html',{'book':book,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
@@ -167,7 +167,7 @@ def article(request):
     article={}
     article['id']=item.id
     article['title']=item.title
-    article['category']=item.category
+    article['categorys']=item.category.split(',')
     article['date']=item.pub_date
     return render(request, 'article.html',{'article':article,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
@@ -177,4 +177,50 @@ def article_content(request):
     return HttpResponse(item.content)
 
 def categorys(request):
-    return home(request)
+    try:
+        key=request.GET['key']
+    except:
+        key=""
+    try:
+        page=request.GET('page')
+    except:
+        page=1
+    if page<=1:
+        prepage=1
+    else:
+        prepage=page-1
+    nextpage=page+1
+    articles=get_articles_by_category(key)
+    books=get_books_by_categoty(key)
+    result=[]
+    lenart=len(articles[(page-1)*3:page*3])
+    lenbook=len(books[(page-1)*3:page*3])
+    result=articles[(page-1)*3:page*3]+books[(page-1)*3:page*3]
+    if lenart<3:
+        for i in range(3-lenart):
+            try:
+                result.append(books[page*3+i+1])
+            except:
+                pass
+    elif lenbook<3:
+        for i in range(3-lenbook):
+            try:
+                result.append(articles[page*3+i+1])
+            except:
+                pass
+    items=[]
+    for i in result:
+        item={}
+        item['title']=i.title
+        item['categorys']=i.category.split(',')
+        try:
+            item['imgurl']=i.imgurl
+            item['url']="../book?bookid=%s"%i.id
+        except:
+            item['url']="../article?articleid=%s"%i.id
+        item['date']=i.pub_date
+        item['introduction']=i.introduction[:80]+"..."
+        items.append(item)
+    loginvalue=islogin(request)
+    categorys=get_category()
+    return render(request,'categorys.html',{'items':items,'nextpage':nextpage,'prepage':prepage,'categorys':categorys,'key':key,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
