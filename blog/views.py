@@ -4,9 +4,11 @@ from django.http  import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate,login as auth_login,logout
 import base64
-from  blog.article import *
+from blog.article import *
 from blog.books import *
-
+from blog.forms import UploadFileForm
+from blog.writefile import handle_uploaded_file
+from blog.files import get_files
 
 def islogin(request):
     buttontext="登录"
@@ -15,7 +17,7 @@ def islogin(request):
     num=2
     if request.user.is_authenticated():
         buttontext=request.user.get_username()
-        url="../userinfor"
+        url="../user"
         classvalue=""
         num=1
     return [buttontext,url,classvalue,num]
@@ -55,7 +57,7 @@ def login_GET(request):
     num=2
     if request.user.is_authenticated():
         buttontext=request.user.get_username()
-        url="../userinfor"
+        url="../user"
         classvalue=""
         num=1
     login_html=render_to_string('login.html')
@@ -135,9 +137,6 @@ def articles(request):
     categorys=get_category()
     return render(request, 'articles.html', {'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'articles':articles,'prepage':prepage,'nextpage':nextpage})
 
-
-def userinfor(request):
-    return home(request)
 
 def book(request):
     try:
@@ -225,3 +224,68 @@ def categorys(request):
     loginvalue=islogin(request)
     categorys=get_category()
     return render(request,'categorys.html',{'items':items,'nextpage':nextpage,'prepage':prepage,'categorys':categorys,'key':key,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def userinfor(request):
+    loginvalue=islogin(request)
+    if loginvalue[-1]==2:
+        return home(request)
+    recent_books=get_books(1,6)
+    recent_articles=get_articles(1,6)
+    books=[]
+    articles=[]
+    for item in recent_books:
+        book={}
+        book['url']="../book?bookid=%s"%item.id
+        book['title']=item.title
+        book['date']=item.pub_date
+        books.append(book)
+    for item in recent_articles:
+        article={}
+        article['url']="../article?articleid=%s"%item.id
+        article['title']=item.title
+        article['date']=item.pub_date
+        articles.append(article)
+    return render(request,'user.html',{'articles':articles,'books':books,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def uploadfile(request):
+    loginvalue=islogin(request)
+    if loginvalue[-1]==2:
+        return home(request)
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST,request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'],form.cleaned_data['title'])
+            return HttpResponseRedirect('/files')
+    else:
+        form=UploadFileForm()
+    return render(request,'uploadfile.html',{'form':form,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def files(request):
+    loginvalue=islogin(request)
+    if loginvalue[-1]==2:
+        return home(request)
+    try:
+        page=int(request.GET['page'])
+    except:
+        page=1
+    if page<=1:
+        prepage=1
+    else:
+        prepage=page-1
+    nextpage=page+1
+    result=get_files(page)
+    files=[]
+    for item in result:
+        uploadfile={}
+        uploadfile['title']=item.title
+        uploadfile['filename']=item.filename
+        uploadfile['date']=item.pub_date
+        uploadfile['downloadurl']=item.downloadurl
+        files.append(uploadfile)
+    return render(request,'files.html',{'nextpage':nextpage,'prepage':prepage,'files':files,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def revisepasswd(request):
+    loginvalue=islogin(request)
+    if loginvalue[-1]==2:
+        return home(request)
+    return userinfor(request)

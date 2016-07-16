@@ -19,3 +19,11 @@ class Book(models.Model):
     downloadurl=models.CharField("downloadurl",max_length=256)
     def __str__(self):# 在Python3中用 __str__ 代替 __unicode__
         return self.title
+
+class File(models.Model):
+    title=models.CharField("title",max_length=256)
+    filename=models.CharField("filename",max_length=256)
+    pub_date = models.DateTimeField(u'上传时间', auto_now_add=True, editable = True)
+    downloadurl=models.CharField("downloadurl",max_length=256)
+    def __str__(self):# 在Python3中用 __str__ 代替 __unicode__
+        return self.title
