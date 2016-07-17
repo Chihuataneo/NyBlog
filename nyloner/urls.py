@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^revisepasswd','blog.views.revisepasswd'),
     url(r'^uploadfile','blog.views.uploadfile'),
     url(r'^files','blog.views.files'),
+    url(r'^savearticle','editor.views.savearticle'),
 ]
