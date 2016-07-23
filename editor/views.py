@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.http  import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate,login as auth_login,logout
-from editor.models import TempArticle
+from blog.models import Article
+from markdown2 import markdown
 
 # Create your views here.
 def islogin(request):
@@ -24,16 +25,22 @@ def editor(request):
         return HttpResponseRedirect("../home")
     return render(request, 'editor.html')
 
-def savearticle(request):
+def append_script(html):
+    html=html+'\n<script src="../static/highlight.pack.js"></script>\n<script>hljs.initHighlightingOnLoad();</script>\n<link rel="stylesheet" href="../static/styles/solarized-dark.css" charset="utf-8">'
+    return html
+
+def publish(request):
     loginvalue=islogin(request)
     if loginvalue[-1]==2:
         return HttpResponseRedirect("../home")
     if request.method=='POST':
-        article=TempArticle()
+        article=Article()
         article.title=request.POST['title']
         article.category=request.POST['category']
         article.introduction=request.POST['description']
-        article.content=request.POST['markdown']
+        html=request.POST['markdown'].replace('&nbsp;',' ').replace('\\n','\n').replace('&lt;','<').replace('&gt;','>')
+        html=append_script(html)
+        article.content=html
         article.save()
         return HttpResponseRedirect("../user")
     else:

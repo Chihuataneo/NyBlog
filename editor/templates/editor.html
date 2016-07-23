@@ -15,13 +15,13 @@
             <div class="btns">
                 <form class="">
                     <label for="">标题：</label>
-                    <input type="text" name="title" id="title" value="" placeholder="Title" style="width:400px;height:30px;"/>
+                    <input type="text" name="title" id="title" value="" style="width:400px;height:30px;"/>
                     <br><br>
                     <label for="">类别：</label>
-                    <input type="text" name="category" id="category" value="" placeholder="Tag" style="width:400px;height:30px;"/>
+                    <input type="text" name="category" id="category" value="" style="width:400px;height:30px;"/>
                     <br><br>
                     <label for="">简介：</label>
-                    <input type="text" name="description" id="description" value="" placeholder="Des" style="width:600px;height:30px;"/>
+                    <input type="text" name="description" id="description" value="" style="width:600px;height:30px;"/>
                     <br>
                 </form>
             </div>
@@ -171,7 +171,9 @@
                     var title=document.getElementById("title").value;
                     var category=document.getElementById("category").value;
                     var description=document.getElementById("description").value;
-                    var markdown=testEditor.getMarkdown();
+                    var html=testEditor.getHTML();
+                    html=html.replace(/<(.+?)>/gi,"&lt;$1&gt;").replace(/ /gi,"&nbsp;").replace(/\n/gi,"\\n");
+
                     var ExportForm=document.createElement("FORM")
                     document.body.appendChild(ExportForm);
                     ExportForm.method = "POST";
@@ -190,6 +192,7 @@
 
                     var md_element=document.createElement("textarea");
                     md_element.setAttribute("name","markdown");
+                    md_element.setAttribute("id","markdown")
                     md_element.setAttribute("type","hidden");
 
                     ExportForm.appendChild(title_element);
@@ -200,10 +203,11 @@
                     title_element.value = title;
                     category_element.value = category;
                     des_element.value = description;
-                    md_element.value = markdown
+                    md_element.value=html
 
-                    ExportForm.action = "../savearticle";
+                    ExportForm.action = "../publish";
                     ExportForm.submit();
+                    document.body.removeChild(ExportForm);
                 });
             });
         </script>
