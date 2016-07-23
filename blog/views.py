@@ -6,9 +6,10 @@ from django.contrib.auth import authenticate,login as auth_login,logout
 import base64
 from blog.article import *
 from blog.books import *
-from blog.forms import UploadFileForm
+from blog.forms import UploadFileForm,ShareFileForm
 from blog.writefile import handle_uploaded_file
 from blog.files import get_files
+from blog.models import Book
 
 def islogin(request):
     buttontext="登录"
@@ -289,3 +290,22 @@ def revisepasswd(request):
     if loginvalue[-1]==2:
         return home(request)
     return userinfor(request)
+
+def sharefile(request):
+    loginvalue=islogin(request)
+    if loginvalue[-1]==2:
+        return HttpResponseRedirect("../home")
+    if request.method=='POST':
+        form = ShareFileForm(request.POST)
+        if form.is_valid():
+            book=Book()
+            book.title=form.cleaned_data['title']
+            book.category=form.cleaned_data['category']
+            book.imgurl=form.cleaned_data['imgurl']
+            book.introduction=form.cleaned_data['introduction']
+            book.downloadurl=form.cleaned_data['downloadurl']
+            book.save()
+            return HttpResponseRedirect("../user")
+    else:
+        form=ShareFileForm()
+    return render(request,'sharefile.html',{'form':form,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
