@@ -35,6 +35,7 @@ def home(request):
         article={}
         article['id']=item.id
         article['title']=item.title
+        article['number']=item.number
         article['categorys']=item.category.split(',')
         article['introduction']=item.introduction
         article['date']=item.pub_date
@@ -104,6 +105,7 @@ def books(request):
         book={}
         book['id']=item.id
         book['title']=item.title
+        book['number']=item.number
         book['introduction']=item.introduction[:80]+"..."
         book['imgurl']=item.imgurl
         book['categorys']=item.category.split(',')
@@ -133,6 +135,7 @@ def articles(request):
         article['title']=item.title
         article['categorys']=item.category.split(',')
         article['introduction']=item.introduction
+        article['number']=item.number
         article['date']=item.pub_date
         articles.append(article)
     categorys=get_category()
@@ -147,11 +150,14 @@ def book(request):
         return books(request)
     loginvalue=islogin(request)
     item=get_book(bookid)
+    item.number+=1
+    item.save()
     book={}
     book['id']=item.id
     book['title']=item.title
     book['introduction']=item.introduction
     book['imgurl']=item.imgurl
+    book['number']=item.number
     book['categorys']=item.category.split(',')
     book['date']=item.pub_date
     book['downloadurl']=item.downloadurl
@@ -167,6 +173,7 @@ def article(request):
     article={}
     article['id']=item.id
     article['title']=item.title
+    article['number']=item.number
     article['categorys']=item.category.split(',')
     article['date']=item.pub_date
     return render(request, 'article.html',{'article':article,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
@@ -174,6 +181,8 @@ def article(request):
 def article_content(request):
     id=request.GET['id']
     item=get_article(id)
+    item.number+=1
+    item.save()
     return HttpResponse(item.content)
 
 def categorys(request):
@@ -220,6 +229,7 @@ def categorys(request):
         except:
             item['url']="../article?articleid=%s"%i.id
         item['date']=i.pub_date
+        item['number']=i.number
         item['introduction']=i.introduction[:80]+"..."
         items.append(item)
     loginvalue=islogin(request)
@@ -239,12 +249,14 @@ def userinfor(request):
         book['url']="../book?bookid=%s"%item.id
         book['title']=item.title
         book['date']=item.pub_date
+        book['number']=item.number
         books.append(book)
     for item in recent_articles:
         article={}
         article['url']="../article?articleid=%s"%item.id
         article['title']=item.title
         article['date']=item.pub_date
+        article['number']=item.number
         articles.append(article)
     return render(request,'user.html',{'articles':articles,'books':books,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 

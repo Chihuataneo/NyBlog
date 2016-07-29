@@ -51,7 +51,7 @@
 											{% for category in book.categorys %}
 											<a href="../categorys?key={{ category }}">{{ category }}</a>
 											{% endfor %}
-											| {{ book.date }}</p>
+											| {{ book.date }}| <img src="../static/images/read.png" >  {{ book.number }} views</img></p>
                                         <p>{{ book.introduction }}</p>
                                         <p><a href="../book?bookid={{ book.id }}">查看更多</a><p>
                                         <hr>
