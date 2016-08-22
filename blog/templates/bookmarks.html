@@ -23,7 +23,7 @@
 								<a href="../articles">文章</a>
 							</li>
 							<li><a href="../books">小书屋</a></li>
-							<li><a href="../marks">BookMarks</a></li>
+                            <li><a href="../marks">BookMarks</a></li>
 							<li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
 								{% if num <= 1 %}
 								<ul>
@@ -39,19 +39,72 @@
                 <!-- Main -->
                     <div id="main" class="wrapper style1">
                         <div class="container">
-                            <header class="major">
-                                <h2>{{ article.title }}</h2>
-								<p>
-									{% for category in article.categorys %}
-									<a href="../categorys?key={{ category }}">{{ category }}</a>
-									{% endfor %}
-									| {{ article.date }} | <img src="../static/images/read.png" >  {{ article.number }} views</img></p>
-                            </header>
+                            <h2>BookMarks</h2>
                             <!-- Content -->
                             <div class="">
-                                <section id="content">
-                                    <iframe id="auto" allowtransparency="true"  style="background-color:white;" name="auto" src="../content?id={{ article.id }}" width="100%" onload="autoHeight()">
-                                    </iframe>
+                                <section>
+                                    <h3>网站</h3>
+                                    <div class="row">
+                                        <div class="6u 12u(xsmall)">
+                                            <ul>
+                                                <li><a href="http://www.liaoxuefeng.com/">廖雪峰的官方网站</a></li>
+                                                <li><a href="https://www.shiyanlou.com/courses/">实验楼</a></li>
+                                                <li><a href="http://www.open-open.com/lib/list/all"> OPEN开发经验库</a></li>
+                                                <li><a href="https://leetcode.com/">LeetCode</a></li>
+                                                <li><a href="http://apistore.baidu.com/">百度APIStore</a></li>
+                                                <li><a href="http://www.easyicon.net/">easyicon</a></li>
+                                                <li><a href="http://gold.xitu.io/">掘金</a></li>
+                                                <li><a href="http://www.socwall.com/">Social Wallpapering</a></li>
+                                                <li><a href="https://www.zoomeye.org/">ZoomEye</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="6u 12u(xsmall)">
+                                            <ul>
+                                                <li><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">Python Extension Packages</a></li>
+                                                <li><a href="https://www.processon.com/network">Processon</a></li>
+                                                <li><a href="http://stackoverflow.com/">Stack Overflow</a></li>
+                                                <li><a href="http://www.v2ex.com/">V2EX</a></li>
+                                                <li><a href="http://www.csdn.net/">CSDN</a></li>
+                                                <li><a href="http://www.imooc.com/">慕课网</a></li>
+                                                <li><a href="https://www.zhihu.com/">知乎</a></li>
+                                                <li><a href="http://www.freebuf.com/">FreeBuf</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                                <hr>
+                                <section>
+                                    <h3>文档</h3>
+                                    <div class="row">
+                                        <div class="6u 12u(xsmall)">
+                                            <ul>
+                                                <li><a href="http://keras-cn.readthedocs.io/en/latest/"> Keras中文文档</a></li>
+                                                <li><a href="https://github.com/Larryxi/Scapy_zh-cn">Scapy中文使用文档</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="6u 12u(xsmall)">
+                                            <ul>
+                                                <li><a href="http://python.usyiyi.cn/django/index.html">Django</a></li>
+                                                <li><a href="http://pillow-cn.readthedocs.io/zh_CN/latest/">Pillow</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section>
+                                    <h3>开源库</h3>
+                                    <div class="row">
+                                        <div class="6u 12u(xsmall)">
+                                            <ul>
+                                                <li><a href="https://github.com/isnowfy/snownlp">SnowNLP</a></li>
+                                                <li><a href="http://www.bootcss.com/">Bootstrap</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="6u 12u(xsmall)">
+                                            <ul>
+                                                <li><a href="https://github.com/fxsjy/jieba"> 结巴中文分词</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </section>
                             </div>
 
@@ -82,11 +135,6 @@
 			<script src="../static/js/util.js"></script>
 			<!--[if lte IE 8]><script src="../static/js/ie/respond.min.js"></script><![endif]-->
 			<script src="../static/js/main.js"></script>
-            <script type="text/javascript" charset="utf-8">
-                function autoHeight(){
-                    var ifr = document.getElementById('auto');
-                    ifr.height = ( ifr.contentDocument && ifr.contentDocument.body.offsetHeight )||(ifr.contentWindow.document.body.scrollHeight);
-                }
-            </script>
+
 	</body>
 </html>

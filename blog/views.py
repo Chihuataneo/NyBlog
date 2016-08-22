@@ -112,7 +112,25 @@ def books(request):
         book['date']=item.pub_date
         books.append(book)
     categorys=get_category()
-    return render(request, 'books.html', {'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'books':books,'prepage':prepage,'nextpage':nextpage})
+    result=get_books(1,4)
+    recent_books=[]
+    recent_articles=[]
+    for item in result:
+        book={}
+        book['url']="../book?bookid=%s"%item.id
+        book['title']=item.title
+        book['date']=item.pub_date
+        book['number']=item.number
+        recent_books.append(book)
+    result=get_articles(1,4)
+    for item in result:
+        article={}
+        article['url']="../article?articleid=%s"%item.id
+        article['title']=item.title
+        article['date']=item.pub_date
+        article['number']=item.number
+        recent_articles.append(article)
+    return render(request, 'books.html', {'recent_books':recent_books,'recent_articles':recent_articles,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'books':books,'prepage':prepage,'nextpage':nextpage})
 
 def articles(request):
     loginvalue=islogin(request)
@@ -139,7 +157,25 @@ def articles(request):
         article['date']=item.pub_date
         articles.append(article)
     categorys=get_category()
-    return render(request, 'articles.html', {'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'articles':articles,'prepage':prepage,'nextpage':nextpage})
+    result=get_books(1,4)
+    recent_books=[]
+    recent_articles=[]
+    for item in result:
+        book={}
+        book['url']="../book?bookid=%s"%item.id
+        book['title']=item.title
+        book['date']=item.pub_date
+        book['number']=item.number
+        recent_books.append(book)
+    result=get_articles(1,4)
+    for item in result:
+        article={}
+        article['url']="../article?articleid=%s"%item.id
+        article['title']=item.title
+        article['date']=item.pub_date
+        article['number']=item.number
+        recent_articles.append(article)
+    return render(request, 'articles.html', {'recent_books':recent_books,'recent_articles':recent_articles,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'articles':articles,'prepage':prepage,'nextpage':nextpage})
 
 
 def book(request):
@@ -234,7 +270,25 @@ def categorys(request):
         items.append(item)
     loginvalue=islogin(request)
     categorys=get_category()
-    return render(request,'categorys.html',{'items':items,'nextpage':nextpage,'prepage':prepage,'categorys':categorys,'key':key,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+    result=get_books(1,4)
+    recent_books=[]
+    recent_articles=[]
+    for item in result:
+        book={}
+        book['url']="../book?bookid=%s"%item.id
+        book['title']=item.title
+        book['date']=item.pub_date
+        book['number']=item.number
+        recent_books.append(book)
+    result=get_articles(1,4)
+    for item in result:
+        article={}
+        article['url']="../article?articleid=%s"%item.id
+        article['title']=item.title
+        article['date']=item.pub_date
+        article['number']=item.number
+        recent_articles.append(article)
+    return render(request,'categorys.html',{'recent_books':recent_books,'recent_articles':recent_articles,'items':items,'nextpage':nextpage,'prepage':prepage,'categorys':categorys,'key':key,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def userinfor(request):
     loginvalue=islogin(request)
@@ -321,3 +375,7 @@ def sharefile(request):
     else:
         form=ShareFileForm()
     return render(request,'sharefile.html',{'form':form,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def bookmarks(request):
+    loginvalue=islogin(request)
+    return render(request, 'bookmarks.html',{'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})

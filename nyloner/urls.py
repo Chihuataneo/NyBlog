@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from blog import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -35,4 +36,5 @@ urlpatterns = [
     url(r'^files','blog.views.files'),
     url(r'^publish','editor.views.publish'),
     url(r'^sharefile','blog.views.sharefile'),
+    url(r'^marks',views.bookmarks)
 ]

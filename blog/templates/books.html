@@ -20,9 +20,10 @@
 						<ul>
 							<li><a href="../home">主页</a></li>
 							<li>
-								<a href="../articles">文章列表</a>
+								<a href="../articles">文章</a>
 							</li>
 							<li><a href="../books">小书屋</a></li>
+							<li><a href="../marks">BookMarks</a></li>
 							<li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
 								{% if num <= 1 %}
 								<ul>
@@ -72,12 +73,29 @@
                                                 <a href="../categorys?key={{ key }}" style="font-size: {{ value }}pt;">{{ key }}</a>
                                                 {% endfor %}
                                             </p>
-                                            <footer>
-                                                <ul class="actions">
-                                                    <li><a href="../categorys" class="button">Learn More</a></li>
-                                                </ul>
-                                            </footer>
                                         </section>
+
+										<section>
+											<h3>最近动态</h3>
+											<h5>文章</h5>
+											<ul>
+												{% for article in recent_articles %}
+												<li><a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.date }}</span></li>
+												{% endfor %}
+											</ul>
+											<h5>书屋</h5>
+											<ul>
+												{% for book in recent_books %}
+												<li><a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.date }}</span></li>
+												{% endfor %}
+											</ul>
+											<footer>
+												<ul class="actions">
+													<li><a href="../categorys" class="button">Learn More</a></li>
+												</ul>
+											</footer>
+										</section>
+									</section>
                             </div>
 						</div>
 					</div>
