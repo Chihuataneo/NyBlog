@@ -10,6 +10,8 @@ from blog.forms import UploadFileForm,ShareFileForm
 from blog.writefile import handle_uploaded_file
 from blog.files import get_files
 from blog.models import Book
+from io import BytesIO as StringIO
+from blog.verify import create_verifycode
 
 def islogin(request):
     buttontext="登录"
@@ -70,11 +72,14 @@ def login(request):
         username=request.POST['username']
         passwd=request.POST['password']
         passwd=base64.b64decode(passwd)
+        code=request.POST['verifycode']
+        if code!=request.session['verifycode']:
+            return login_GET(request)
         user=authenticate(username=username,password=passwd)
         if user is not None:
             if user.is_active:
                 auth_login(request,user)
-                return home(request)
+                return userinfor(request)
             else:
                 return login_GET(request)
         else:
@@ -235,7 +240,6 @@ def categorys(request):
     else:
         prepage=page-1
     nextpage=page+1
-    print(nextpage)
     articles=get_articles_by_category(key)
     books=get_books_by_categoty(key)
     result=[]
@@ -383,3 +387,18 @@ def bookmarks(request):
 def projects(request):
     loginvalue=islogin(request)
     return render(request, 'projects.html',{'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def verifycode(request):
+    try:
+        inputcode=request.GET['inputcode']
+        if str(inputcode)!=request.session['verifycode']:
+            return HttpResponse('False')
+        else:
+            return HttpResponse('True')
+    except:
+        pass
+    img,code=create_verifycode()
+    mstream =StringIO()
+    request.session['verifycode']=code
+    img.save(mstream, "jpeg")
+    return HttpResponse(mstream.getvalue(),content_type="image/jpeg")

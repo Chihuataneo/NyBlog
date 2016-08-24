@@ -43,30 +43,29 @@
 							<section id="content">
                                 <h3>登录</h3>
                                 <form method="post" action="" id="loginform">
-									<div class="row">
-										<div class="6u 12u$(xsmall)">
-                                            <span>Username:</span>
-											<input type="text" name="username" id="username"  placeholder="Userame" />
-										</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="6u$ 12u$(xsmall)">
-                                            <span>Password:</span>
-											<input type="password" name="password" id="password" placeholder="Password" />
-										</div>
-                                        <span><br></br></span>
-                                        <div class="12u$">
-                                            <ul class="actions">
-                                                <li><input type="button" value="登录" class="special" onclick="return base64()"/></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+									<div class="4u 12u$(xsmall)">
+										<input type="text" name="username" id="username"  placeholder="Userame" />
+									</div>
+									<span><br></span>
+									<div class="4u$ 12u$(xsmall)">
+										<input type="password" name="password" id="password" placeholder="Password" />
+									</div>
+									<span><br></span>
+									<div class="4u$ 12u$(xsmall) ">
+										<label id="verifyinfor"></label>
+										<input  height"40" type="text" name="verifycode" id="verifycode" placeholder="Verifycode" style="width:50%;float:left;"/>
+										<img id='imgCode' title="看不清？" src="../verifycode" onclick="ChangeCode();" style="float:left;vertical-align:center;margin:10px;" width="100" height="50"/>
+									</div>
+									<br></br>
+									<div class="12u$">
+										<ul class="actions">
+											<li><input id='submit' type="button" value="登录" class="special" onclick="return base64()"/></li>
+										</ul>
+									</div>
                                 </form>
 							</section>
-
 					</div>
 				</div>
-
 
 			<!-- Footer -->
 				<footer id="footer">
@@ -100,7 +99,32 @@
                     document.getElementById("password").value=encode_passwd;
                     $("#loginform").submit();
                     return;
-                }
+                };
+				function ChangeCode(){
+					var code = document.getElementById('imgCode');
+					var timestamp = Date.parse(new Date());
+					code.src='../verifycode?t='+timestamp;
+				};
+				$(function() {
+					$("#verifycode").change(function(){
+						var inputcode=document.getElementById('verifycode').value
+						var request = new XMLHttpRequest();
+						request.onreadystatechange=requestCallback;
+						request.open("GET","../verifycode?inputcode="+inputcode);
+						request.send();
+						function requestCallback(){
+							status=request.responseText;
+							var label=document.getElementById('verifyinfor')
+							labelvalue=label.innerText;
+							if(status=='False'){
+								$("#verifyinfor").html("验证码错误！");
+							}
+							else{
+								$("#verifyinfor").html("OK!");
+							}
+						};
+					});
+				});
             </script>
 	</body>
 </html>
