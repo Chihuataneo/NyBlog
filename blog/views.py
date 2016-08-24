@@ -379,3 +379,7 @@ def sharefile(request):
 def bookmarks(request):
     loginvalue=islogin(request)
     return render(request, 'bookmarks.html',{'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def projects(request):
+    loginvalue=islogin(request)
+    return render(request, 'projects.html',{'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})

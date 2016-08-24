@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'^files','blog.views.files'),
     url(r'^publish','editor.views.publish'),
     url(r'^sharefile','blog.views.sharefile'),
-    url(r'^marks',views.bookmarks)
+    url(r'^marks',views.bookmarks),
+    url(r'^projects',views.projects)
 ]

@@ -23,6 +23,7 @@
 								<a href="../articles">文章</a>
 							</li>
 							<li><a href="../books">小书屋</a></li>
+                            <li><a href="../projects">项目</a></li>
                             <li><a href="../marks">BookMarks</a></li>
 							<li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
 								{% if num <= 1 %}
@@ -41,22 +42,44 @@
                         <div class="container">
                             <h2>项目</h2>
                             <!-- Content -->
-                            <div class="">
-                                <section>
-                                    <h3>1.NyBlog</h3>
-
-                                </section>
-                                <hr>
-                                <section>
-                                    <h3>2.文档</h3>
-
-                                </section>
-                                <hr>
-                                <section>
-                                    <h3>3.开源库</h3>
-
-                                </section>
-                            </div>
+                            <ul>
+                                <li>
+                                    <h3>NyBlog</h3>
+                                    <p>
+                                        基于Django搭建的博客网站，实现了markdown编辑发布文章，文件上传分享,自动更新背景图片等功能
+                                    </p>
+                                    <p>
+                                        项目地址： <a href="https://github.com/Nyloner/NyBlog">https://github.com/Nyloner/NyBlog</a>
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3>Nyspider</h3>
+                                    <p>
+                                        编写的各种爬虫
+                                    </p>
+                                    <p>
+                                        项目地址： <a href="https://github.com/Nyloner/Nyspider">https://github.com/Nyloner/Nyspider</a>
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3>NyPython</h3>
+                                    <p>
+                                        Python写的一些小工具，包括验证码识别，抓包工具嗅探器，爬取代理网站维护自己的代理IP池等
+                                    </p>
+                                    <p>
+                                        项目地址： <a href="https://github.com/Nyloner/NyPython">https://github.com/Nyloner/NyPython</a>
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3>CloudMusic</h3>
+                                    <p>
+                                        爬取网易云音乐上面的歌单，并用Django搭建服务端，Qt搭建的客户端，实现的一个音乐播放器。
+                                    </p>
+                                    <p>
+                                        项目地址： <a href="https://github.com/Nyloner/CloudMusic">https://github.com/Nyloner/CloudMusic</a>
+                                    </p>
+                                </li>
+                            </ul>
 
                         </div>
                     </div>
