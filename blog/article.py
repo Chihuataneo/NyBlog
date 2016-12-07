@@ -31,8 +31,6 @@ def get_category():
                 result[key]+=2
             except:
                 result[key]=10
-            if result[key]>34:
-                result[key]=34
     for item in Book.objects.all():
         try:
             keys=item.category.split(',')
@@ -43,6 +41,4 @@ def get_category():
                 result[key]+=2
             except:
                 result[key]=10
-            if result[key]>34:
-                result[key]=34
     return result

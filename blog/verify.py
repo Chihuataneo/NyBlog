@@ -33,10 +33,10 @@ def create_verifycode():
     result=eval(verifystr)
     img=Image.new('RGB',size, (255,255,255))
     draw=ImageDraw.Draw(img)
-    font=ImageFont.truetype('Arial.ttf',36)
+    font=ImageFont.truetype('DejaVuSerif-Bold.ttf',36)
     verifystr+='=?'
     for index in range(len(verifystr)):
-        draw.text((10+20*index,10),text=verifystr[index],font=font,fill=randcolor())
+        draw.text((10+20*index,10),text=verifystr[index],font=font,fill=randcolor_2())
     draw=create_lines(draw,size)
     draw=create_points(draw,size)
     img=img.filter(ImageFilter.CONTOUR)
