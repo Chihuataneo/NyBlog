@@ -26,7 +26,7 @@ def editor(request):
     return render(request, 'editor.html')
 
 def append_script(html):
-    html=html+'\n<script src="../static/highlight.pack.js"></script>\n<script>hljs.initHighlightingOnLoad();</script>\n<link rel="stylesheet" href="../static/styles/solarized-light.css" charset="utf-8">'
+    html=html+'\n<script src="../static/highlight.pack.js"></script>\n<script>hljs.initHighlightingOnLoad();</script>\n<link rel="stylesheet" href="../static/styles/atom-one-dark.css" charset="utf-8">'
     return html
 
 def publish(request):
