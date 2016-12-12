@@ -2,8 +2,8 @@ from blog.models import Article
 from blog.models import Book
 
 def get_articles(page,num):
-    fromnum=(page-1)*(num-1)
-    tonum=page*(num)
+    fromnum=(page-1)*num
+    tonum=page*num
     result=Article.objects.order_by('-pub_date').all()[fromnum:tonum]
     return result
 
