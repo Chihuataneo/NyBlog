@@ -37,5 +37,7 @@ urlpatterns = [
     url(r'^sharefile','blog.views.sharefile'),
     url(r'^marks','blog.views.bookmarks'),
     url(r'^projects','blog.views.projects'),
-    url(r'^verifycode','blog.views.verifycode')
+    url(r'^verifycode','blog.views.verifycode'),
+    url(r'^boxoffice','tools.views.boxoffice'),
+    url(r'^movie','tools.views.movie_detail')
 ]
