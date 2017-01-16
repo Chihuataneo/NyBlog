@@ -23,6 +23,16 @@ def movie_detail(request):
     return_data={"status":"true","movie":result}
     return HttpResponse(json.dumps(return_data),content_type="application/json")
 
+def movie_boxoffice(request):
+    try:
+        movie_id=request.GET['movieId']
+    except:
+        return HttpResponse(content='{"status":"false"}')
+    result=bx.select_by_movieid(movie_id)
+    return_data={"status":"true","boxoffice":result,"movieId":movie_id}
+    return HttpResponse(json.dumps(return_data),content_type="application/json")
+
+
 def proxy(request):
     try:
         page=int(request.GET['page'])
