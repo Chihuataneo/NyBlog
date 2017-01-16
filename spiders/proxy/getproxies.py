@@ -1,10 +1,12 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-import sqlite3
 import threading
 import time
 from mimvp.mimvpproxy import mimvp_proxy
+import pymysql
+import json
+
 
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -18,8 +20,7 @@ lock=threading.Lock()
 f=open('./mysql_setting.json','r',encoding='utf8')
 userdata=json.load(f)
 f.close()
-conn=pymysql.connect(host=userdata['host'],user=userdata['user'],passwd=userdata['passwd'],db=userdata['db'],port=userdata['port'],charset='utf8')
-cursor=conn.cursor()
+
 
 class IsEnable(threading.Thread):
     def __init__(self,ip):
@@ -33,7 +34,6 @@ class IsEnable(threading.Thread):
         try:
             html=requests.get('http://httpbin.org/ip',proxies=self.proxies,timeout=5).text
             result=eval(html)['origin']
-            print(result)
             if len(result.split(','))==2:
                 return
             if result in self.ip:
@@ -43,18 +43,15 @@ class IsEnable(threading.Thread):
             return
 
     def insert_into_sql(self):
-        conn=sqlite3.connect('sqldb.db')
-        cursor=conn.cursor()
+        global cursor
+        global conn
         try:
-            date=time.strftime('%Y-%m-%d %X', time.localtime() )
-            cursor.execute("insert into enableips(ip,date) values(?,?)",(self.ip,date,))
+            date=time.strftime('%Y-%m-%d %X', time.localtime())
+            cursor.execute("insert into tools_proxyip(ip,port,time) values"+str((self.ip.split(':')[0],self.ip.split(':')[1],date)))
+            print(date,self.ip)
         except:
-            conn.close()
             return
-        cursor.close()
         conn.commit()
-        conn.close()
-
 
 def get_from_ipcn():
     urls=['http://proxy.ipcn.org/proxya.html','http://proxy.ipcn.org/proxya2.html','http://proxy.ipcn.org/proxyb.html','http://proxy.ipcn.org/proxyb2.html']
@@ -152,3 +149,44 @@ def get_from_mimvp():
     time.sleep(3)
 
 if __name__ == '__main__':
+    while True:
+        conn=pymysql.connect(host=userdata['host'],user=userdata['user'],passwd=userdata['passwd'],db=userdata['db'],port=userdata['port'],charset='utf8')
+        cursor=conn.cursor()
+        try:
+            timenow=time.strftime('%Y-%m-%d %X',time.localtime())
+            get_from_ipcn()
+            print(timenow,"get_from_ipcn ok")
+        except:
+            print(timenow,"get_from_ipcn failed")
+
+        try:
+            timenow=time.strftime('%Y-%m-%d %X',time.localtime())
+            get_from_xicidaili()
+            print(timenow,"get_from_xicidaili ok")
+        except:
+            print(timenow,"get_from_xicidaili failed")
+
+        try:
+            timenow=time.strftime('%Y-%m-%d %X',time.localtime())
+            get_from_kxdaili()
+            print(timenow,"get_from_kxdaili ok")
+        except:
+            print(timenow,"get_from_kxdaili failed")
+
+        try:
+            timenow=time.strftime('%Y-%m-%d %X',time.localtime())
+            get_from_66ip()
+            print(timenow,"get_from_66ip ok")
+        except:
+            print(timenow,"get_from_66ip failed")
+
+        try:
+            timenow=time.strftime('%Y-%m-%d %X',time.localtime())
+            get_from_mimvp()
+            print(timenow,"get_from_mimvp ok")
+        except:
+            print(timenow,"get_from_mimvp failed")
+        conn.commit()
+        cursor.close()
+        conn.close()
+        time.sleep(300)

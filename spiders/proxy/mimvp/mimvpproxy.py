@@ -27,7 +27,6 @@ def mimvp_proxy():
                 result=imageRecognize.recognise(image)
                 port=[item[1] for item in result]
                 port=''.join(port)
-                print('mimvp',ip+':'+port)
                 iplist.append(ip+':'+port)
             except:
                 continue
