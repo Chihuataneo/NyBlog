@@ -38,8 +38,7 @@ def proxy(request):
         page=int(request.GET['page'])
         num=int(request.GET['num'])
     except:
-        page=1
-        num=10
+        return render(request,"proxy.html")
     result=proxyip.select_ip(page,num)
     return_data={"status":"true","list":result}
     return HttpResponse(json.dumps(return_data),content_type="application/json")
