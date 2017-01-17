@@ -40,7 +40,7 @@ class IsEnable(threading.Thread):
                     self.update()
         except:
             with lock:
-                self.delete
+                self.delete()
 
     def update(self):
         global cursor
