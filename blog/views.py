@@ -10,6 +10,7 @@ from blog.forms import UploadFileForm,ShareFileForm
 from blog.writefile import handle_uploaded_file
 from blog.files import get_files
 from blog.models import Book
+from blog.models import File
 from io import BytesIO as StringIO
 from blog.verify import create_verifycode
 
@@ -354,6 +355,19 @@ def files(request):
         uploadfile['downloadurl']=item.downloadurl
         files.append(uploadfile)
     return render(request,'files.html',{'nextpage':nextpage,'prepage':prepage,'files':files,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
+
+def delete(request):
+    try:
+        filename=request.GET['filename']
+    except:
+        return files(request)
+    File.objects.filter(filename=filename).delete()
+    try:
+        import  os
+        os.remove('collected_static/files/%s'%filename)
+    except:
+        pass
+    return files(request)
 
 def revisepasswd(request):
     loginvalue=islogin(request)
