@@ -39,5 +39,8 @@ urlpatterns = [
     url(r'^projects','blog.views.projects'),
     url(r'^verifycode','blog.views.verifycode'),
     url(r'^boxoffice','tools.views.boxoffice'),
-    url(r'^movie','tools.views.movie_detail')
+    url(r'^movieBoxoffices','tools.views.movie_boxoffice'),
+    url(r'^movie','tools.views.movie_detail'),
+    url(r'^proxy','tools.views.proxy'),
+    url(r'^delete','blog.views.delete')
 ]
