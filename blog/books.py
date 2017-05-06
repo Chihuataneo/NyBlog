@@ -4,7 +4,10 @@ from blog.models import Book
 def get_books(page,num):
     fromnum=(page-1)*num
     tonum=page*num
-    result=Book.objects.order_by('-pub_date').all()[fromnum:tonum]
+    items=Book.objects.order_by('-pub_date').all()[fromnum:tonum]
+    result=[]
+    for item in items:
+        result.append(item.to_dict())
     return result
 
 def get_book(bookid):
@@ -16,5 +19,5 @@ def get_books_by_categoty(category):
     result=[]
     for book in books:
         if category in book.category:
-            result.append(book)
+            result.append(book.to_dict())
     return result

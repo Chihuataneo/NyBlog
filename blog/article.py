@@ -4,7 +4,10 @@ from blog.models import Book
 def get_articles(page,num):
     fromnum=(page-1)*num
     tonum=page*num
-    result=Article.objects.order_by('-pub_date').all()[fromnum:tonum]
+    items=Article.objects.order_by('-pub_date').all()[fromnum:tonum]
+    result=[]
+    for item in items:
+        result.append(item.to_dict())
     return result
 
 def get_article(articleid):
@@ -16,7 +19,7 @@ def get_articles_by_category(category):
     result=[]
     for item in articles:
         if category in item.category:
-            result.append(item)
+            result.append(item.to_dict())
     return result
 
 def get_category():

@@ -10,6 +10,9 @@ class Article(models.Model):
     pub_date = models.DateTimeField(u'发表时间', auto_now_add=True, editable = True)
     def __str__(self):# 在Python3中用 __str__ 代替 __unicode__
         return self.title
+    def to_dict(self):
+        return dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]])
+
 
 class Book(models.Model):
     title=models.CharField("名称",max_length=256)
@@ -21,6 +24,9 @@ class Book(models.Model):
     downloadurl=models.CharField("downloadurl",max_length=256)
     def __str__(self):# 在Python3中用 __str__ 代替 __unicode__
         return self.title
+    def to_dict(self):
+        return dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]])
+
 
 class File(models.Model):
     title=models.CharField("title",max_length=256)
@@ -29,3 +35,5 @@ class File(models.Model):
     downloadurl=models.CharField("downloadurl",max_length=256)
     def __str__(self):# 在Python3中用 __str__ 代替 __unicode__
         return self.title
+    def to_dict(self):
+        return dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]])

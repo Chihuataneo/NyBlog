@@ -32,27 +32,9 @@ def index(request):
 
 def home(request):
     loginvalue=islogin(request)
-    result=get_articles(page=1,num=2)
-    articles=[]
-    for item in result:
-        article={}
-        article['id']=item.id
-        article['title']=item.title
-        article['number']=item.number
-        article['categorys']=item.category.split(',')
-        article['introduction']=item.introduction
-        article['date']=item.pub_date
-        articles.append(article)
+    articles=get_articles(page=1,num=2)
     categorys=get_category()
-    result=get_books(1,6)
-    books=[]
-    for item in result:
-        book={}
-        book['id']=item.id
-        book['title']=item.title[:13]+'..'
-        book['introduction']=item.introduction[:80]+"..."
-        book['imgurl']=item.imgurl
-        books.append(book)
+    books=get_books(1,6)
     return render(request, 'home.html', {'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'articles':articles,'categorys':categorys,'books':books})
 
 def login_GET(request):
@@ -105,37 +87,12 @@ def books(request):
     else:
         prepage=page-1
     nextpage=page+1
-    result=get_books(page,num)
-    books=[]
-    for item in result:
-        book={}
-        book['id']=item.id
-        book['title']=item.title
-        book['number']=item.number
-        book['introduction']=item.introduction[:80]+"..."
-        book['imgurl']=item.imgurl
-        book['categorys']=item.category.split(',')
-        book['date']=item.pub_date
-        books.append(book)
+    books=get_books(page,num)
+    for book in books:
+        book['introduction']=book['introduction'][:80]+"..."
     categorys=get_category()
-    result=get_books(1,4)
-    recent_books=[]
-    recent_articles=[]
-    for item in result:
-        book={}
-        book['url']="../book?bookid=%s"%item.id
-        book['title']=item.title
-        book['date']=item.pub_date
-        book['number']=item.number
-        recent_books.append(book)
-    result=get_articles(1,4)
-    for item in result:
-        article={}
-        article['url']="../article?articleid=%s"%item.id
-        article['title']=item.title
-        article['date']=item.pub_date
-        article['number']=item.number
-        recent_articles.append(article)
+    recent_books=get_books(1,4)
+    recent_articles=get_articles(1,4)
     return render(request, 'books.html', {'recent_books':recent_books,'recent_articles':recent_articles,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'books':books,'prepage':prepage,'nextpage':nextpage})
 
 def articles(request):
@@ -151,36 +108,10 @@ def articles(request):
     else:
         prepage=page-1
     nextpage=page+1
-    result=get_articles(page,num)
-    articles=[]
-    for item in result:
-        article={}
-        article['id']=item.id
-        article['title']=item.title
-        article['categorys']=item.category.split(',')
-        article['introduction']=item.introduction
-        article['number']=item.number
-        article['date']=item.pub_date
-        articles.append(article)
+    articles=get_articles(page,num)
     categorys=get_category()
-    result=get_books(1,4)
-    recent_books=[]
-    recent_articles=[]
-    for item in result:
-        book={}
-        book['url']="../book?bookid=%s"%item.id
-        book['title']=item.title
-        book['date']=item.pub_date
-        book['number']=item.number
-        recent_books.append(book)
-    result=get_articles(1,4)
-    for item in result:
-        article={}
-        article['url']="../article?articleid=%s"%item.id
-        article['title']=item.title
-        article['date']=item.pub_date
-        article['number']=item.number
-        recent_articles.append(article)
+    recent_books=get_books(1,4)
+    recent_articles=get_articles(1,4)
     return render(request, 'articles.html', {'recent_books':recent_books,'recent_articles':recent_articles,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3],'categorys':categorys,'articles':articles,'prepage':prepage,'nextpage':nextpage})
 
 
@@ -194,15 +125,7 @@ def book(request):
     item=get_book(bookid)
     item.number+=1
     item.save()
-    book={}
-    book['id']=item.id
-    book['title']=item.title
-    book['introduction']=item.introduction
-    book['imgurl']=item.imgurl
-    book['number']=item.number
-    book['categorys']=item.category.split(',')
-    book['date']=item.pub_date
-    book['downloadurl']=item.downloadurl
+    book=item.to_dict()
     return render(request, 'book.html',{'book':book,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def article(request):
@@ -212,12 +135,7 @@ def article(request):
         return articles(request)
     loginvalue=islogin(request)
     item=get_article(articleid)
-    article={}
-    article['id']=item.id
-    article['title']=item.title
-    article['number']=item.number
-    article['categorys']=item.category.split(',')
-    article['date']=item.pub_date
+    article=item.to_dict()
     return render(request, 'article.html',{'article':article,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def article_content(request):
@@ -243,7 +161,6 @@ def categorys(request):
     nextpage=page+1
     articles=get_articles_by_category(key)
     books=get_books_by_categoty(key)
-    result=[]
     lenart=len(articles[(page-1)*3:page*3])
     lenbook=len(books[(page-1)*3:page*3])
     result=articles[(page-1)*3:page*3]+books[(page-1)*3:page*3]
@@ -260,63 +177,25 @@ def categorys(request):
             except:
                 pass
     items=[]
-    for i in result:
-        item={}
-        item['title']=i.title
-        item['categorys']=i.category.split(',')
-        try:
-            item['imgurl']=i.imgurl
-            item['url']="../book?bookid=%s"%i.id
-        except:
-            item['url']="../article?articleid=%s"%i.id
-        item['date']=i.pub_date
-        item['number']=i.number
-        item['introduction']=i.introduction[:80]+"..."
+    for item in result:
+        if 'imgurl' in item:
+            item['url']="../book?bookid=%s"%item['id']
+        else:
+            item['url']="../article?articleid=%s"%item['id']
+        item['introduction']=item['introduction'][:80]+"..."
         items.append(item)
     loginvalue=islogin(request)
     categorys=get_category()
-    result=get_books(1,4)
-    recent_books=[]
-    recent_articles=[]
-    for item in result:
-        book={}
-        book['url']="../book?bookid=%s"%item.id
-        book['title']=item.title
-        book['date']=item.pub_date
-        book['number']=item.number
-        recent_books.append(book)
-    result=get_articles(1,4)
-    for item in result:
-        article={}
-        article['url']="../article?articleid=%s"%item.id
-        article['title']=item.title
-        article['date']=item.pub_date
-        article['number']=item.number
-        recent_articles.append(article)
+    recent_books=get_books(1,4)
+    recent_articles=get_articles(1,4)
     return render(request,'categorys.html',{'recent_books':recent_books,'recent_articles':recent_articles,'items':items,'nextpage':nextpage,'prepage':prepage,'categorys':categorys,'key':key,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def userinfor(request):
     loginvalue=islogin(request)
     if loginvalue[-1]==2:
         return home(request)
-    recent_books=get_books(1,6)
-    recent_articles=get_articles(1,6)
-    books=[]
-    articles=[]
-    for item in recent_books:
-        book={}
-        book['url']="../book?bookid=%s"%item.id
-        book['title']=item.title
-        book['date']=item.pub_date
-        book['number']=item.number
-        books.append(book)
-    for item in recent_articles:
-        article={}
-        article['url']="../article?articleid=%s"%item.id
-        article['title']=item.title
-        article['date']=item.pub_date
-        article['number']=item.number
-        articles.append(article)
+    books=get_books(1,6)
+    articles=get_articles(1,6)
     return render(request,'user.html',{'articles':articles,'books':books,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def uploadfile(request):
@@ -345,15 +224,7 @@ def files(request):
     else:
         prepage=page-1
     nextpage=page+1
-    result=get_files(page)
-    files=[]
-    for item in result:
-        uploadfile={}
-        uploadfile['title']=item.title
-        uploadfile['filename']=item.filename
-        uploadfile['date']=item.pub_date
-        uploadfile['downloadurl']=item.downloadurl
-        files.append(uploadfile)
+    files=get_files(page)
     return render(request,'files.html',{'nextpage':nextpage,'prepage':prepage,'files':files,'name': loginvalue[0],'url':loginvalue[1],'class':loginvalue[2],'num':loginvalue[3]})
 
 def delete(request):
