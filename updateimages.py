@@ -16,13 +16,13 @@ def get_imgurls():
     urls=[]
     while True:
         try:
-            html=requests.get('http://www.socwall.com/wallpapers/page:{}/tagged:nature/'.format(page),headers=headers,timeout=30).text
+            html=requests.get('http://www.socwall.com/wallpapers/page:{}/'.format(page),headers=headers,timeout=30).text
         except:
             break
         table=BeautifulSoup(html,'lxml').find('ul',{'class':'wallpaperList'}).find_all('a',{'class':'image'})
         for a in table:
             urls.append('http://www.socwall.com/'+a.get('href'))
-        if page==4:
+        if page==10:
             break
         page+=1
     imgurls=[]
@@ -48,6 +48,7 @@ def updateimages():
         print(date,'Failed')
         return
     length=len(imgurls)
+    print(length)
     img_paths=['collected_static/index/images/bg01.jpg','collected_static/index/images/bg02.jpg','collected_static/index/images/bg03.jpg','collected_static/images/wrapper.jpg']
     for path in img_paths:
         while True:
@@ -64,4 +65,4 @@ def updateimages():
 
 while True:
     updateimages()
-    time.sleep(3600*24)
+    time.sleep(3600)
