@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'nyloner.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
+        'NAME': 'nyblog',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
