@@ -85,13 +85,13 @@
                                         <h4>文章</h4>
                                         <ul>
                                             {% for article in articles %}
-                                            <li><a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.date }}</span></li>
+                                            <li><a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.pub_date }}</span></li>
                                             {% endfor %}
                                         </ul>
                                         <h4>书屋</h4>
                                         <ul>
                                             {% for book in books %}
-                                            <li><a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.date }}</span></li>
+                                            <li><a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.pub_date }}</span></li>
                                             {% endfor %}
                                         </ul>
 									</section>

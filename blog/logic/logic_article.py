@@ -6,7 +6,9 @@ def get_articles(page, num):
     items = Article.objects.order_by('-pub_date').all()[(page - 1) * num:page * num]
     result = []
     for item in items:
-        result.append(item.to_dict())
+        item=item.to_dict()
+        item['categorys']=item['category'].split(',')
+        result.append(item)
     return result
 
 
@@ -20,7 +22,9 @@ def get_articles_by_category(category):
     result = []
     for item in articles:
         if category in item.category:
-            result.append(item.to_dict())
+            item = item.to_dict()
+            item['categorys'] = item['category'].split(',')
+            result.append(item)
     return result
 
 

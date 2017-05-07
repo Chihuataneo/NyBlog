@@ -43,7 +43,7 @@ def home(request):
     categorys = get_category()
     books = get_books(1, 6)
     for book in books:
-        book['introduction'] = book['introduction'][:30] + "..."
+        book['introduction'] = book['introduction'][:80] + "..."
     return render(request, 'home.html',
                   {'name': login_value['name'], 'url': login_value['url'], 'class': login_value['class_value'],
                    'num': login_value['state'], 'articles': articles, 'categorys': categorys, 'books': books})
@@ -141,8 +141,9 @@ def book(request):
     item = get_book(bookid)
     item.number += 1
     item.save()
-    book = item.to_dict()
-    return render(request, 'book.html', {'book': book, 'name': login_value['name'], 'url': login_value['url'],
+    book_dict = item.to_dict()
+    book_dict['categorys']=book_dict['category'].split(',')
+    return render(request, 'book.html', {'book': book_dict, 'name': login_value['name'], 'url': login_value['url'],
                                          'class': login_value['class_value'], 'num': login_value['state']})
 
 
@@ -153,14 +154,15 @@ def article(request):
         return articles(request)
     login_value = get_login_value(request)
     item = get_article(articleid)
-    article = item.to_dict()
-    return render(request, 'article.html', {'article': article, 'name': login_value['name'], 'url': login_value['url'],
+    article_dict = item.to_dict()
+    article_dict['categorys']=article_dict['category'].split(',')
+    return render(request, 'article.html', {'article': article_dict, 'name': login_value['name'], 'url': login_value['url'],
                                             'class': login_value['class_value'], 'num': login_value['state']})
 
 
 def article_content(request):
-    id = request.GET['id']
-    item = get_article(id)
+    article_id = request.GET['id']
+    item = get_article(article_id)
     item.number += 1
     item.save()
     return HttpResponse(item.content)

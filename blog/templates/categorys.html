@@ -62,7 +62,7 @@
 											{% for category in item.categorys %}
 											<a href="../categorys?key={{ category }}">{{ category }}</a>
 											{% endfor %}
-											| {{ item.date }}| <img src="../static/images/read.png" >  {{ item.number }} views</img></p>
+											| {{ item.pub_date }}| <img src="../static/images/read.png" >  {{ item.number }} views</img></p>
                                         <p>{{ item.introduction }}</p>
                                         <p><a href="{{ item.url }}">查看更多</a><p>
                                         <hr>
@@ -90,13 +90,13 @@
 											<h5>文章</h5>
 											<ul>
 												{% for article in recent_articles %}
-												<li><a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.date }}</span></li>
+												<li><a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.pub_date }}</span></li>
 												{% endfor %}
 											</ul>
 											<h5>书屋</h5>
 											<ul>
 												{% for book in recent_books %}
-												<li><a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.date }}</span></li>
+												<li><a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.pub_date }}</span></li>
 												{% endfor %}
 											</ul>
 											<footer>
