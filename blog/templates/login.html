@@ -59,8 +59,7 @@
 									</div>
 									<span><br></span>
 									<div class="4u$ 12u$(xsmall) ">
-										<label id="verifyinfor"></label>
-										<input  height"40" type="text" name="verifycode" id="verifycode" placeholder="Verifycode" style="width:50%;float:left;"/>
+										<input  height="40" type="text" name="verifycode" id="verifycode" placeholder="Verifycode" style="width:50%;float:left;"/>
 										<img id='imgCode' title="看不清？" src="../verifycode" onclick="ChangeCode();" style="float:left;vertical-align:center;margin:10px;" width="100" height="50"/>
 									</div>
 									<br></br>
@@ -121,13 +120,11 @@
 						request.send();
 						function requestCallback(){
 							status=request.responseText;
-							var label=document.getElementById('verifyinfor')
-							labelvalue=label.innerText;
 							if(status=='False'){
-								$("#verifyinfor").html("验证码错误！");
+								document.getElementById('verifycode').style.border = '1.5px solid red';
 							}
 							else{
-								$("#verifyinfor").html("OK!");
+								document.getElementById('verifycode').style.border = '1.5px solid green';
 							}
 						};
 					});

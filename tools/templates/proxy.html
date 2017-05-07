@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     </head>
     <body>
-        <nav class="navbar navbar-default" role="navigation">
+        <nav class="navbar navbar-inverse" role="navigation">
           <div class="container-fluid">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -28,6 +28,7 @@
                   <a href="../tools" class="dropdown-toggle" data-toggle="dropdown">工具箱 <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="../proxy">代理IP</a></li>
+                    <li><a href="../downloader">视频下载器</a></li>
                   </ul>
                 </li>
                 <li><a href="../projects">项目</a></li>
@@ -53,8 +54,8 @@
                 </tbody>
             </table>
             <div style="float:right">
-                <button type="button"  id="prepage" class="btn btn-primary" onclick="prepage();">上一页</button>
-                <button type="button"  id="nextpage" class="btn btn-primary" onclick="nextpage();">下一页</button>
+                <button type="button"  id="prepage" class="btn btn-default" onclick="prepage();">上一页</button>
+                <button type="button"  id="nextpage" class="btn btn-default" onclick="nextpage();">下一页</button>
             </div>
         </div>
     </body>
