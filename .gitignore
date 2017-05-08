@@ -5,5 +5,4 @@ migrations
 settings.py
 updateimages.py
 collected_static
-*.json
-.gitignore
+mysql_setting.json
