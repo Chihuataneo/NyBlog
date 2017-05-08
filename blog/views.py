@@ -92,10 +92,10 @@ def books(request):
         page = 1
         num = 6
     if page <= 1:
-        prepage = 1
+        last_page = 1
     else:
-        prepage = page - 1
-    nextpage = page + 1
+        last_page = page - 1
+    next_page = page + 1
     books = get_books(page, num)
     for book in books:
         book['introduction'] = book['introduction'][:80] + "..."
@@ -105,7 +105,7 @@ def books(request):
     return render(request, 'books.html',
                   {'recent_books': recent_books, 'recent_articles': recent_articles, 'name': login_value['name'],
                    'url': login_value['url'], 'class': login_value['class_value'], 'num': login_value['state'],
-                   'categorys': categorys, 'books': books, 'prepage': prepage, 'nextpage': nextpage})
+                   'categorys': categorys, 'books': books, 'last_page': last_page, 'next_page': next_page})
 
 
 def articles(request):
@@ -117,10 +117,10 @@ def articles(request):
         page = 1
         num = 6
     if page <= 1:
-        prepage = 1
+        last_page = 1
     else:
-        prepage = page - 1
-    nextpage = page + 1
+        last_page = page - 1
+    next_page = page + 1
     articles = get_articles(page, num)
     categorys = get_category()
     recent_books = get_books(1, 4)
@@ -128,36 +128,36 @@ def articles(request):
     return render(request, 'articles.html',
                   {'recent_books': recent_books, 'recent_articles': recent_articles, 'name': login_value['name'],
                    'url': login_value['url'], 'class': login_value['class_value'], 'num': login_value['state'],
-                   'categorys': categorys, 'articles': articles, 'prepage': prepage, 'nextpage': nextpage})
+                   'categorys': categorys, 'articles': articles, 'last_page': last_page, 'next_page': next_page})
 
 
 def book(request):
     try:
-        bookid = request.GET['bookid']
-        bookid = int(bookid)
+        book_id = request.GET['bookid']
     except:
         return books(request)
     login_value = get_login_value(request)
-    item = get_book(bookid)
+    item = get_book(book_id)
     item.number += 1
     item.save()
     book_dict = item.to_dict()
-    book_dict['categorys']=book_dict['category'].split(',')
+    book_dict['categorys'] = book_dict['category'].split(',')
     return render(request, 'book.html', {'book': book_dict, 'name': login_value['name'], 'url': login_value['url'],
                                          'class': login_value['class_value'], 'num': login_value['state']})
 
 
 def article(request):
     try:
-        articleid = request.GET['articleid']
+        article_id = request.GET['articleid']
     except:
         return articles(request)
     login_value = get_login_value(request)
-    item = get_article(articleid)
+    item = get_article(article_id)
     article_dict = item.to_dict()
-    article_dict['categorys']=article_dict['category'].split(',')
-    return render(request, 'article.html', {'article': article_dict, 'name': login_value['name'], 'url': login_value['url'],
-                                            'class': login_value['class_value'], 'num': login_value['state']})
+    article_dict['categorys'] = article_dict['category'].split(',')
+    return render(request, 'article.html',
+                  {'article': article_dict, 'name': login_value['name'], 'url': login_value['url'],
+                   'class': login_value['class_value'], 'num': login_value['state']})
 
 
 def article_content(request):
@@ -178,23 +178,23 @@ def categorys(request):
     except:
         page = 1
     if page <= 1:
-        prepage = 1
+        last_page = 1
     else:
-        prepage = page - 1
-    nextpage = page + 1
+        last_page = page - 1
+    next_page = page + 1
     articles = get_articles_by_category(key)
     books = get_books_by_category(key)
-    lenart = len(articles[(page - 1) * 3:page * 3])
-    lenbook = len(books[(page - 1) * 3:page * 3])
+    len_of_articles = len(articles[(page - 1) * 3:page * 3])
+    len_of_books = len(books[(page - 1) * 3:page * 3])
     result = articles[(page - 1) * 3:page * 3] + books[(page - 1) * 3:page * 3]
-    if lenart < 3:
-        for i in range(3 - lenart):
+    if len_of_articles < 3:
+        for i in range(3 - len_of_articles):
             try:
                 result.append(books[page * 3 + i + 1])
             except:
                 pass
-    elif lenbook < 3:
-        for i in range(3 - lenbook):
+    elif len_of_books < 3:
+        for i in range(3 - len_of_books):
             try:
                 result.append(articles[page * 3 + i + 1])
             except:
@@ -213,7 +213,7 @@ def categorys(request):
     recent_articles = get_articles(1, 4)
     return render(request, 'categorys.html',
                   {'recent_books': recent_books, 'recent_articles': recent_articles, 'items': items,
-                   'nextpage': nextpage, 'prepage': prepage, 'categorys': categorys, 'key': key,
+                   'next_page': next_page, 'last_page': last_page, 'categorys': categorys, 'key': key,
                    'name': login_value['name'], 'url': login_value['url'], 'class': login_value['class_value'],
                    'num': login_value['state']})
 
@@ -223,7 +223,12 @@ def userinfor(request):
     if login_value['state'] == 2:
         return home(request)
     books = get_books(1, 6)
+    for book in books:
+        book['url'] = "../book?bookid=%s" % book['id']
+
     articles = get_articles(1, 6)
+    for article in articles:
+        article['url'] = "../article?articleid=%s" % article['id']
     return render(request, 'user.html',
                   {'articles': articles, 'books': books, 'name': login_value['name'], 'url': login_value['url'],
                    'class': login_value['class_value'], 'num': login_value['state']})
@@ -253,13 +258,13 @@ def files(request):
     except:
         page = 1
     if page <= 1:
-        prepage = 1
+        last_page = 1
     else:
-        prepage = page - 1
-    nextpage = page + 1
+        last_page = page - 1
+    next_page = page + 1
     files = get_files(page)
     return render(request, 'files.html',
-                  {'nextpage': nextpage, 'prepage': prepage, 'files': files, 'name': login_value['name'],
+                  {'next_page': next_page, 'last_page': last_page, 'files': files, 'name': login_value['name'],
                    'url': login_value['url'], 'class': login_value['class_value'], 'num': login_value['state']})
 
 
