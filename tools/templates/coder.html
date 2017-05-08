@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Coder-零度</title>
+    <link rel="icon" type="image/x-icon" href="http://nyloner.cn/static/images/head_img.png">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/doc.min.css">
+    <link href="data:text/css;charset=utf-8," data-href="../static/css/bootstrap-theme.min.css" rel="stylesheet"
+          id="bs-theme-stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../home">零度</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="../articles">文章</a></li>
+                <li><a href="../books">小书屋</a></li>
+                <li class="dropdown">
+                    <a href="../tools" class="dropdown-toggle" data-toggle="dropdown">工具箱 <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../proxy">代理IP</a></li>
+                        <li><a href="../coder">Coder</a></li>
+                    </ul>
+                </li>
+                <li><a href="../projects">项目</a></li>
+                <li><a href="../marks">BookMarks</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-lg-9" role="main">
+            <div class="bs-docs-section">
+                <h2 id="timestamp" class="page-header">
+                    <a class="anchorjs-link "
+                       style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                       href="#timestamp"></a>
+                    Unix时间戳
+                </h2>
+                <p>当前时间：<i id="current_date"></i></p>
+                <p>当前时间戳：<i id="current_timestamp"></i></p>
+                <br>
+                <p>时间戳 → 北京时间（YYYY-MM-DD HH:MM:SS）</p>
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="input_timestamp" placeholder="时间戳">
+                    <span class="btn glyphicon glyphicon-arrow-right" onclick="timestampToDate();"
+                          aria-hidden="true"></span>
+                    <input type="text" class="form-control" id="output_time" placeholder="时间">
+                </div>
+                <p>北京时间（YYYY-MM-DD HH:MM:SS） → 时间戳</p>
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="input_time" placeholder="时间">
+                    <span class="btn glyphicon glyphicon-arrow-right" onclick="dateToTimestamp();"
+                          aria-hidden="true"></span>
+                    <input type="text" class="form-control" id="output_timestamp" placeholder="时间戳">
+                </div>
+            </div>
+            <div class="bs-docs-section">
+                <h2 id="base64" class="page-header">
+                    <a class="anchorjs-link "
+                       style="font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                       href="#base64"></a>
+                    Base64编码/解码
+                </h2>
+                <h4>文本Base64编码/解码</h4>
+                <textarea id="base64_text_input" class="form-control">需编码的文本</textarea>
+                <span class="btn glyphicon glyphicon-arrow-down" onclick="base64Encode();" aria-hidden="true"></span>
+                <span class="btn glyphicon glyphicon-arrow-up" onclick="base64Decode();" aria-hidden="true"></span>
+                <textarea id="base64_text_output" class="form-control">需解码的文本</textarea>
+                <br>
+                <h4>图片Base64编码/解码</h4>
+                <a>
+                    <input onchange="encodeImg();"
+                           style="position: absolute;display: block;width: 100px;height: 40px;opacity: 0;"
+                           type="file"
+                           accept="image/*" id="upload_file">
+                    选择图片
+                </a>
+                <textarea id="base64_img_output" class="form-control"></textarea>
+                <span class="btn glyphicon glyphicon-arrow-down" onclick="decodeImg();" aria-hidden="true"></span>
+                <br>
+                <img id="img_decode" src="">
+
+            </div>
+            <div class="bs-docs-section">
+                <h2 id="md5" class="page-header">
+                    <a class="anchorjs-link "
+                       style="font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                       href="#md5"></a>
+                    MD5加密
+                </h2>
+                <textarea id="md5_text_input" class="form-control">需加密的文本</textarea>
+                <span class="btn glyphicon glyphicon-arrow-down" onclick="md5Encode();" aria-hidden="true"></span>
+                <textarea id="md5_text_output" class="form-control"></textarea>
+
+            </div>
+        </div>
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+                <ul class="nav bs-docs-sidenav">
+                    <li class="">
+                        <a href="#timestamp">Unix时间戳</a>
+                    </li>
+                    <li class="">
+                        <a href="#base64">Base64</a>
+                    </li>
+                    <li class="">
+                        <a href="#md5">MD5</a>
+                    </li>
+                </ul>
+                <a class="back-to-top" href="#top">
+                    返回顶部
+                </a>
+            </nav>
+        </div>
+    </div>
+</div>
+<footer class="bs-docs-footer">
+    <div class="container">
+        <ul class="bs-docs-footer-links">
+            <li>&copy; nyloner.cn. All rights reserved.</li>
+            <li>Github: <a href="https://github.com/Nyloner">Nyloner</a></li>
+            <li>Email: <a href="mailto:nyloner.root@gmail.com">nyloner.root@gmail.com</a></li>
+        </ul>
+    </div>
+</footer>
+</body>
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="../static/js/base64.js"></script>
+<script src="../static/js/md5.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/coder.js"></script>
+</html>

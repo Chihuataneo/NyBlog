@@ -23,3 +23,7 @@ def downloader(request):
 
 def tools(request):
     return render(request, "proxy.html")
+
+
+def coder(request):
+    return render(request, "coder.html")
