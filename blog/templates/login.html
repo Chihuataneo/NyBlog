@@ -27,7 +27,9 @@
                 <li><a href="../books">小书屋</a></li>
                 <li><a href="../tools">工具箱</a>
                     <ul>
-                        <li><a href="../proxy">代理IP</a></li>
+                        {% for tool in tools %}
+                            <li><a href="{{ tool.url }}">{{ tool.title }}</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
                 <li><a href="../projects">项目</a></li>

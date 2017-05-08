@@ -1,141 +1,150 @@
 <!DOCTYPE HTML>
 
 <html>
-	<head>
-		<title>文章-零度</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="../static/css/main.css" />
-		<link rel="icon" type="image/x-icon" href="http://nyloner.cn/static/images/head_img.png">
+<head>
+    <title>文章-零度</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="../static/css/main.css"/>
+    <link rel="icon" type="image/x-icon" href="http://nyloner.cn/static/images/head_img.png">
 
-		<!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
-	</head>
-	<body class="landing">
-		<div id="page-wrapper">
+    <!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
+</head>
+<body class="landing">
+<div id="page-wrapper">
 
-			<!-- Header -->
-				<header id="header">
-					<h1 id="logo"><a href="../">零度</a></h1>
-					<nav id="nav">
-						<ul>
-							<li><a href="../home">主页</a></li>
-							<li>
-								<a href="../articles">文章</a>
-							</li>
-							<li><a href="../books">小书屋</a></li>
-							<li><a href="../tools">工具箱</a>
-								<ul>
-									<li><a href="../proxy">代理IP</a></li>
-								</ul>
-							</li>
-							<li><a href="../projects">项目</a></li>
-							<li><a href="../marks">BookMarks</a></li>
-							<li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
-								{% if num <= 1 %}
-								<ul>
-									<li><a href="{{ url }}">个人中心</a></li>
-									<li><a href="../blog_logout" >Logout</a></li>
-								</ul>
-								{% endif %}
-							</li>
-						</ul>
-					</nav>
-				</header>
-                <div id="main" class="wrapper style1">
-					<div class="container">
-						<header class="major">
-							<h2>分类列表</h2>
-						</header>
-						<div class="row 150%">
-							<div class="8u 12u$(medium)">
+    <!-- Header -->
+    <header id="header">
+        <h1 id="logo"><a href="../">零度</a></h1>
+        <nav id="nav">
+            <ul>
+                <li><a href="../home">主页</a></li>
+                <li>
+                    <a href="../articles">文章</a>
+                </li>
+                <li><a href="../books">小书屋</a></li>
+                <li><a href="../tools">工具箱</a>
+                    <ul>
+                        {% for tool in tools %}
+                            <li><a href="{{ tool.url }}">{{ tool.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="../projects">项目</a></li>
+                <li><a href="../marks">BookMarks</a></li>
+                <li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
+                    {% if num <= 1 %}
+                        <ul>
+                            <li><a href="{{ url }}">个人中心</a></li>
+                            <li><a href="../blog_logout">Logout</a></li>
+                        </ul>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div id="main" class="wrapper style1">
+        <div class="container">
+            <header class="major">
+                <h2>分类列表</h2>
+            </header>
+            <div class="row 150%">
+                <div class="8u 12u$(medium)">
                                     <span><a href="../categorys">分类列表</a>
                                         <span>>></span>
                                         <a href="../categorys?key={{ key }}">{{ key }}</a>
                                     </span>
-                                    <p>----------------------------------------------------------------------------</p>
-									<section id="content">
-                                        {% for item in items %}
-                                        <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
-                                        <p>
-											{% for category in item.categorys %}
-											<a href="../categorys?key={{ category }}">{{ category }}</a>
-											{% endfor %}
-											| {{ item.pub_date }}| <img src="../static/images/read.png" >  {{ item.number }} views</img></p>
-                                        <p>{{ item.introduction }}</p>
-                                        <p><a href="{{ item.url }}">查看更多</a><p>
-                                        <hr>
-                                        {% endfor %}
-									</section>
-                                    <a href="../categorys?key={{ key }}&page={{ last_page }}" class="button special">上一页</a>
-                                    <a href="../categorys?key={{ key }}&page={{ next_page }}" class="button special">下一页</a>
-							</div>
-                            <div class="4u$ 12u$(medium)">
-                                <!-- Sidebar -->
-                                    <hr>
-									<section id="sidebar">
-                                        <p></p>
-                                        <section>
-                                            <h3>标签</h3>
-                                            <p>
-                                                {% for key,value in categorys.items %}
-                                                <a href="../categorys?key={{ key }}" style="font-size: {{ value }}pt;">{{ key }}</a>
-                                                {% endfor %}
-                                            </p>
-                                        </section>
+                    <p>----------------------------------------------------------------------------</p>
+                    <section id="content">
+                        {% for item in items %}
+                            <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                            <p>
+                                {% for category in item.categorys %}
+                                    <a href="../categorys?key={{ category }}">{{ category }}</a>
+                                {% endfor %}
+                                | {{ item.pub_date }}| <img src="../static/images/read.png"> {{ item.number }}
+                                views</img></p>
+                            <p>{{ item.introduction }}</p>
+                            <p><a href="{{ item.url }}">查看更多</a><p>
+                            <hr>
+                        {% endfor %}
+                    </section>
+                    <a href="../categorys?key={{ key }}&page={{ last_page }}" class="button special">上一页</a>
+                    <a href="../categorys?key={{ key }}&page={{ next_page }}" class="button special">下一页</a>
+                </div>
+                <div class="4u$ 12u$(medium)">
+                    <!-- Sidebar -->
+                    <hr>
+                    <section id="sidebar">
+                        <p></p>
+                        <section>
+                            <h3>标签</h3>
+                            <p>
+                                {% for key,value in categorys.items %}
+                                    <a href="../categorys?key={{ key }}" style="font-size: {{ value }}pt;">{{ key }}</a>
+                                {% endfor %}
+                            </p>
+                        </section>
 
-										<section>
-											<h3>最近动态</h3>
-											<h5>文章</h5>
-											<ul>
-												{% for article in recent_articles %}
-												<li><a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.pub_date }}</span></li>
-												{% endfor %}
-											</ul>
-											<h5>书屋</h5>
-											<ul>
-												{% for book in recent_books %}
-												<li><a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.pub_date }}</span></li>
-												{% endfor %}
-											</ul>
-											<footer>
-												<ul class="actions">
-													<li><a href="../categorys" class="button">Learn More</a></li>
-												</ul>
-											</footer>
-										</section>
-									</section>
+                        <section>
+                            <h3>最近动态</h3>
+                            <h5>文章</h5>
+                            <ul>
+                                {% for article in recent_articles %}
+                                    <li>
+                                        <a href="{{ article.url }}">{{ article.title }}</a><span>------{{ article.pub_date }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <h5>书屋</h5>
+                            <ul>
+                                {% for book in recent_books %}
+                                    <li>
+                                        <a href="{{ book.url }}">{{ book.title }}</a><span>------{{ book.pub_date }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <footer>
+                                <ul class="actions">
+                                    <li><a href="../categorys" class="button">Learn More</a></li>
+                                </ul>
+                            </footer>
+                        </section>
+                    </section>
 
-                            </div>
-						</div>
-					</div>
-				</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-			<!-- Footer -->
-				<footer id="footer">
-					<ul class="icons">
-						<li><a href="https://github.com/Nyloner" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-						<li><a href="mailto:nyloner.root@gmail.com" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; nyloner.cn. All rights reserved.</li>
-						<li>Github: <a href="https://github.com/Nyloner" >Nyloner</a></li>
-						<li>Email: <a href="mailto:nyloner.root@gmail.com">nyloner.root@gmail.com</a></li>
-						<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</footer>
-		</div>
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="https://github.com/Nyloner" class="icon alt fa-github"><span class="label">GitHub</span></a>
+            </li>
+            <li><a href="mailto:nyloner.root@gmail.com" class="icon alt fa-envelope"><span
+                    class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; nyloner.cn. All rights reserved.</li>
+            <li>Github: <a href="https://github.com/Nyloner">Nyloner</a></li>
+            <li>Email: <a href="mailto:nyloner.root@gmail.com">nyloner.root@gmail.com</a></li>
+            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+    </footer>
+</div>
 
-		<!-- Scripts -->
-			<script src="../static/js/jquery.min.js"></script>
-			<script src="../static/js/jquery.scrolly.min.js"></script>
-			<script src="../static/js/jquery.dropotron.min.js"></script>
-			<script src="../static/js/jquery.scrollex.min.js"></script>
-			<script src="../static/js/skel.min.js"></script>
-			<script src="../static/js/util.js"></script>
-			<!--[if lte IE 8]><script src="../static/js/ie/respond.min.js"></script><![endif]-->
-			<script src="../static/js/main.js"></script>
-	</body>
+<!-- Scripts -->
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/jquery.scrolly.min.js"></script>
+<script src="../static/js/jquery.dropotron.min.js"></script>
+<script src="../static/js/jquery.scrollex.min.js"></script>
+<script src="../static/js/skel.min.js"></script>
+<script src="../static/js/util.js"></script>
+<!--[if lte IE 8]><script src="../static/js/ie/respond.min.js"></script><![endif]-->
+<script src="../static/js/main.js"></script>
+</body>
 </html>

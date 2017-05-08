@@ -5,119 +5,122 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>个人中心-零度</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="../static/css/main.css" />
-		<link rel="icon" type="image/x-icon" href="http://nyloner.cn/static/images/head_img.png">
+<head>
+    <title>个人中心-零度</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]><script src="../static/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="../static/css/main.css"/>
+    <link rel="icon" type="image/x-icon" href="http://nyloner.cn/static/images/head_img.png">
 
-		<!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
-	</head>
-	<body>
-		<div id="page-wrapper">
+    <!--[if lte IE 9]><link rel="stylesheet" href="../static/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="../static/css/ie8.css" /><![endif]-->
+</head>
+<body>
+<div id="page-wrapper">
 
-			<!-- Header -->
-            <!-- Header -->
-                <header id="header">
-                    <h1 id="logo"><a href="../">零度</a></h1>
-                    <nav id="nav">
+    <!-- Header -->
+    <!-- Header -->
+    <header id="header">
+        <h1 id="logo"><a href="../">零度</a></h1>
+        <nav id="nav">
+            <ul>
+                <li><a href="../home">主页</a></li>
+                <li>
+                    <a href="../articles">文章</a>
+                </li>
+                <li><a href="../books">小书屋</a></li>
+                <li><a href="../tools">工具箱</a>
+                    <ul>
+                        {% for tool in tools %}
+                            <li><a href="{{ tool.url }}">{{ tool.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="../projects">项目</a></li>
+                <li><a href="../marks">BookMarks</a></li>
+                <li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
+                    {% if num <= 1 %}
                         <ul>
-                            <li><a href="../home">主页</a></li>
-                            <li>
-                                <a href="../articles">文章</a>
-                            </li>
-                            <li><a href="../books">小书屋</a></li>
-							<li><a href="../tools">工具箱</a>
-								<ul>
-									<li><a href="../proxy">代理IP</a></li>
-								</ul>
-							</li>
-							<li><a href="../projects">项目</a></li>
-							<li><a href="../marks">BookMarks</a></li>
-                            <li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
-                                {% if num <= 1 %}
-                                <ul>
-                                    <li><a href="{{ url }}">个人中心</a></li>
-                                    <li><a href="../blog_logout" >Logout</a></li>
-                                </ul>
-                                {% endif %}
-                            </li>
+                            <li><a href="{{ url }}">个人中心</a></li>
+                            <li><a href="../blog_logout">Logout</a></li>
                         </ul>
-                    </nav>
-                </header>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-			<!-- Main -->
-				<div id="main" class="wrapper style1">
-					<div class="container">
-						<div class="row 150%">
-							<div class="4u 12u$(medium)">
+    <!-- Main -->
+    <div id="main" class="wrapper style1">
+        <div class="container">
+            <div class="row 150%">
+                <div class="4u 12u$(medium)">
 
-								<!-- Sidebar -->
-									<section id="sidebar">
-										<section>
-											<h3>个人信息</h3>
-                                            <ul>
-                                                <li><a class="icon" href="../revisepasswd">修改密码</a></li>
-                                                <li><a class="icon" href="../blog_logout">注销</a></li>
-                                            </ul>
-										</section>
-										<hr />
-										<section>
-											<h3>管理</h3>
-											<ul>
-                                                <li><a class="icon" href="../editor">发表文章</a></li>
-                                                <li><a class="icon" href="../uploadfile">上传文件</a></li>
-                                                <li><a class="icon" href="../files">文件列表</a></li>
-												<li><a class="icon" href="../sharefile">分享文件</a></li>
-                                            </ul>
-										</section>
-									</section>
-							</div>
-							<div class="8u$ 12u$(medium) important(medium)">
+                    <!-- Sidebar -->
+                    <section id="sidebar">
+                        <section>
+                            <h3>个人信息</h3>
+                            <ul>
+                                <li><a class="icon" href="../revisepasswd">修改密码</a></li>
+                                <li><a class="icon" href="../blog_logout">注销</a></li>
+                            </ul>
+                        </section>
+                        <hr/>
+                        <section>
+                            <h3>管理</h3>
+                            <ul>
+                                <li><a class="icon" href="../editor">发表文章</a></li>
+                                <li><a class="icon" href="../uploadfile">上传文件</a></li>
+                                <li><a class="icon" href="../files">文件列表</a></li>
+                                <li><a class="icon" href="../sharefile">分享文件</a></li>
+                            </ul>
+                        </section>
+                    </section>
+                </div>
+                <div class="8u$ 12u$(medium) important(medium)">
 
-								<!-- Content -->
-									<section id="content">
-                                        <header>
-                                            <h3>上传文件</h3>
-                                        </header>
-                                        <form method="post" enctype="multipart/form-data" >
-                                                {{ form }}
-                                        <input type="submit" value="ok"/>
-                                        </form>
-									</section>
+                    <!-- Content -->
+                    <section id="content">
+                        <header>
+                            <h3>上传文件</h3>
+                        </header>
+                        <form method="post" enctype="multipart/form-data">
+                            {{ form }}
+                            <input type="submit" value="ok"/>
+                        </form>
+                    </section>
 
-							</div>
-						</div>
-					</div>
-				</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Footer -->
-    				<footer id="footer">
-    					<ul class="icons">
-    						<li><a href="https://github.com/Nyloner" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-    						<li><a href="" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
-    					</ul>
-						<ul class="copyright">
-							<li>&copy; nyloner.cn. All rights reserved.</li>
-							<li>Github: <a href="https://github.com/Nyloner" >Nyloner</a></li>
-							<li>Email: <a href="mailto:nyloner.root@gmail.com">nyloner.root@gmail.com</a></li>
-							<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-						</ul>
-    				</footer>
-    		</div>
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="https://github.com/Nyloner" class="icon alt fa-github"><span class="label">GitHub</span></a>
+            </li>
+            <li><a href="" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; nyloner.cn. All rights reserved.</li>
+            <li>Github: <a href="https://github.com/Nyloner">Nyloner</a></li>
+            <li>Email: <a href="mailto:nyloner.root@gmail.com">nyloner.root@gmail.com</a></li>
+            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+    </footer>
+</div>
 
-		<!-- Scripts -->
-			<script src="../static/js/jquery.min.js"></script>
-			<script src="../static/js/jquery.scrolly.min.js"></script>
-			<script src="../static/js/jquery.dropotron.min.js"></script>
-			<script src="../static/js/jquery.scrollex.min.js"></script>
-			<script src="../static/js/skel.min.js"></script>
-			<script src="../static/js/util.js"></script>
-			<!--[if lte IE 8]><script src="../static/js/ie/respond.min.js"></script><![endif]-->
-			<script src="../static/js/main.js"></script>
+<!-- Scripts -->
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/jquery.scrolly.min.js"></script>
+<script src="../static/js/jquery.dropotron.min.js"></script>
+<script src="../static/js/jquery.scrollex.min.js"></script>
+<script src="../static/js/skel.min.js"></script>
+<script src="../static/js/util.js"></script>
+<!--[if lte IE 8]><script src="../static/js/ie/respond.min.js"></script><![endif]-->
+<script src="../static/js/main.js"></script>
 
-	</body>
+</body>
 </html>
