@@ -109,7 +109,32 @@
                 <textarea id="md5_text_input" class="form-control">需加密的文本</textarea>
                 <span class="btn glyphicon glyphicon-arrow-down" onclick="md5Encode();" aria-hidden="true"></span>
                 <textarea id="md5_text_output" class="form-control"></textarea>
-
+            </div>
+            <div class="bs-docs-section">
+                <h2 id="url_encode" class="page-header">
+                    <a class="anchorjs-link "
+                       style="font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                       href="#url_encode"></a>
+                    URL编码/解码
+                </h2>
+                <textarea id="url_text_input" class="form-control">需编码的内容</textarea>
+                <span class="btn glyphicon glyphicon-arrow-down" onclick="URLEncode();" aria-hidden="true"></span>
+                <span class="btn glyphicon glyphicon-arrow-up" onclick="URLDecode();" aria-hidden="true"></span>
+                <textarea id="url_text_output" class="form-control">需解码的内容</textarea>
+            </div>
+            <div class="bs-docs-section">
+                <h2 id="ip_info" class="page-header">
+                    <a class="anchorjs-link "
+                       style="font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                       href="#ip_info"></a>
+                    IP查询
+                </h2>
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="ip_input" placeholder="IP" value="{{ client_ip }}">
+                    <span class="btn glyphicon glyphicon-arrow-right" onclick="getIpInfo();"
+                          aria-hidden="true"></span>
+                    <span id="ip_info_text"></span>
+                </div>
             </div>
         </div>
         <div class="col-md-3" role="complementary">
@@ -123,6 +148,12 @@
                     </li>
                     <li class="">
                         <a href="#md5">MD5</a>
+                    </li>
+                    <li class="">
+                        <a href="#url_encode">URLEncode</a>
+                    </li>
+                    <li class="">
+                        <a href="#ip_info">IPInfo</a>
                     </li>
                 </ul>
                 <a class="back-to-top" href="#top">

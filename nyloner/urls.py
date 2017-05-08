@@ -47,5 +47,6 @@ urlpatterns = [
     url(r'^proxy', tools_views.proxy),
     url(r'^downloader', tools_views.downloader),
     url(r'^tools', tools_views.tools),
-    url(r'^coder', tools_views.coder)
+    url(r'^coder', tools_views.coder),
+    url(r'^ipinfo', tools_views.tool_ip_query)
 ]

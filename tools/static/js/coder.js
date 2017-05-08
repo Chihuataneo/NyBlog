@@ -53,6 +53,26 @@ function decodeImg() {
     var img = document.getElementById('img_decode');
     img.src = document.getElementById('base64_img_output').value;
 }
+
+function URLEncode() {
+    var text = document.getElementById('url_text_input').value;
+    document.getElementById('url_text_output').value = encodeURI(text);
+}
+
+function URLDecode() {
+    var text = document.getElementById('url_text_output').value;
+    document.getElementById('url_text_input').value = decodeURI(text);
+}
+
+function getIpInfo() {
+    var ip = document.getElementById('ip_input').value;
+    $.get('../ipinfo?ip=' + ip, function (result) {
+        if (result.status === 'true') {
+            var info = result.data.country + '\t' + result.data.city + '\t' + result.data.isp;
+            document.getElementById('ip_info_text').innerHTML = info;
+        }
+    });
+}
 Date.prototype.format = function (format) {
     var date = {
         "M+": this.getMonth() + 1,
