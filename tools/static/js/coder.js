@@ -68,7 +68,7 @@ function getIpInfo() {
     var ip = document.getElementById('ip_input').value;
     $.get('../ipinfo?ip=' + ip, function (result) {
         if (result.status === 'true') {
-            var info = result.data.country + '\t' + result.data.city + '\t' + result.data.isp;
+            var info = result.location;
             document.getElementById('ip_info_text').innerHTML = info;
         }
     });
@@ -97,3 +97,4 @@ Date.prototype.format = function (format) {
 
 setInterval(currentDate, 1000);
 setInterval(currentTimestamp, 1000);
+getIpInfo();
