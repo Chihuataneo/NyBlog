@@ -11,6 +11,8 @@ def proxy(request):
     try:
         page = int(request.GET['page'])
         num = int(request.GET['num'])
+        if num>20:
+            num=20
     except:
         return render(request, "proxy.html")
     result = proxyip.select_ip(page, num)
