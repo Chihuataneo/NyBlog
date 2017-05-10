@@ -12,7 +12,7 @@ headers = {
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/39.0"}
 
 def mimvp_proxy():
-    urls=['http://proxy.mimvp.cn/free.php?proxy=in_hp','http://proxy.mimvp.cn/free.php?proxy=out_hp']
+    urls=['http://proxy.mimvp.com/free.php?proxy=in_hp','http://proxy.mimvp.com/free.php?proxy=out_hp','http://proxy.mimvp.com/free.php?proxy=in_tp','http://proxy.mimvp.com/free.php?proxy=out_tp']
     for url in urls:
         html=requests.get(url,headers=headers).text
         table=BeautifulSoup(html,'lxml').find('div',id='list').find('tbody')#.find_all('tr')
@@ -22,7 +22,7 @@ def mimvp_proxy():
         for item in table:
             try:
                 ip=item[0]
-                imgurl='http://proxy.mimvp.cn/'+item[1].replace('amp;','')
+                imgurl='http://proxy.mimvp.com/'+item[1].replace('amp;','')
                 image=getimage(imgurl)
                 result=imageRecognize.recognise(image)
                 port=[item[1] for item in result]

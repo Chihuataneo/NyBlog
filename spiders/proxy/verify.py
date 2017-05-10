@@ -37,6 +37,9 @@ class IsEnable(threading.Thread):
             if result in self.ip:
                 with lock:
                     self.update()
+            else:
+                with lock:
+                    self.delete()
         except:
             with lock:
                 self.delete()
@@ -47,7 +50,10 @@ class IsEnable(threading.Thread):
         date = time.strftime('%Y-%m-%d %X', time.localtime())
         cursor.execute("update tools_proxyip set time='%s' where ip='%s'" % (date, self.ip.split(':')[0]))
         print(date, 'update', self.ip)
-        conn.commit()
+        try:
+            conn.commit()
+        except:
+            pass
 
     def delete(self):
         global cursor
@@ -55,7 +61,10 @@ class IsEnable(threading.Thread):
         date = time.strftime('%Y-%m-%d %X', time.localtime())
         print(date, 'delete', self.ip)
         cursor.execute("delete from tools_proxyip where ip='%s'" % (self.ip.split(':')[0]))
-        conn.commit()
+        try:
+            conn.commit()
+        except:
+            pass
 
 
 def verify():

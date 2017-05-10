@@ -6,12 +6,12 @@ import time
 from mimvp.mimvpproxy import mimvp_proxy
 import pymysql
 import json
+import logging
 
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Encoding": "gzip, deflate",
     "Accept-Language": "en-US,en;q=0.5",
-    "Connection": "keep-alive",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/39.0"}
 
 lock = threading.Lock()
@@ -19,7 +19,6 @@ lock = threading.Lock()
 f = open('./mysql_setting.json', 'r', encoding='utf8')
 userdata = json.load(f)
 f.close()
-
 
 class IsEnable(threading.Thread):
     def __init__(self, ip):
@@ -32,6 +31,7 @@ class IsEnable(threading.Thread):
     def run(self):
         try:
             html = requests.get('http://httpbin.org/ip', proxies=self.proxies, timeout=5).text
+            print(self.ip,html)
             result = eval(html)['origin']
             if len(result.split(',')) == 2:
                 return
@@ -51,7 +51,10 @@ class IsEnable(threading.Thread):
             print(date, self.ip)
         except:
             return
-        conn.commit()
+        try:
+            conn.commit()
+        except:
+            pass
 
 
 def get_from_ipcn():
@@ -78,9 +81,10 @@ def get_from_xicidaili():
     for pageurl in urls:
         try:
             html = requests.get(pageurl, headers=headers, timeout=30).text
+            print(html)
+            table = BeautifulSoup(html,'lxml').find('table', id='ip_list').find_all('tr')
         except:
             continue
-        table = BeautifulSoup(html, 'lxml').find('table', id='ip_list').find_all('tr')
         iplist = []
         for tr in table[1:]:
             tds = tr.find_all('td')
@@ -156,47 +160,26 @@ def get_from_mimvp():
         work.start()
     time.sleep(3)
 
+def get_current_time():
+    timenow = time.strftime('%Y-%m-%d %X', time.localtime())
+    return timenow
 
 if __name__ == '__main__':
+    crawlers=[get_from_ipcn,get_from_xicidaili,get_from_66ip,get_from_kxdaili,get_from_mimvp]
     while True:
         conn = pymysql.connect(host=userdata['host'], user=userdata['user'], passwd=userdata['passwd'],
                                db=userdata['db'], port=userdata['port'], charset='utf8')
         cursor = conn.cursor()
+        for crawler in crawlers:
+            try:
+                crawler()
+                print(get_current_time(), crawler,'OK')
+            except Exception as e:
+                print(get_current_time(),crawler,'Error',logging.exception(e))
         try:
-            timenow = time.strftime('%Y-%m-%d %X', time.localtime())
-            get_from_ipcn()
-            print(timenow, "get_from_ipcn ok")
+            conn.commit()
         except:
-            print(timenow, "get_from_ipcn failed")
-
-        try:
-            timenow = time.strftime('%Y-%m-%d %X', time.localtime())
-            get_from_xicidaili()
-            print(timenow, "get_from_xicidaili ok")
-        except:
-            print(timenow, "get_from_xicidaili failed")
-
-        try:
-            timenow = time.strftime('%Y-%m-%d %X', time.localtime())
-            get_from_kxdaili()
-            print(timenow, "get_from_kxdaili ok")
-        except:
-            print(timenow, "get_from_kxdaili failed")
-
-        try:
-            timenow = time.strftime('%Y-%m-%d %X', time.localtime())
-            get_from_66ip()
-            print(timenow, "get_from_66ip ok")
-        except:
-            print(timenow, "get_from_66ip failed")
-
-        try:
-            timenow = time.strftime('%Y-%m-%d %X', time.localtime())
-            get_from_mimvp()
-            print(timenow, "get_from_mimvp ok")
-        except:
-            print(timenow, "get_from_mimvp failed")
-        conn.commit()
+            pass
         cursor.close()
         conn.close()
         time.sleep(300)
