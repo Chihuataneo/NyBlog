@@ -75,61 +75,6 @@
 </body>
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="../static/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-    var page = 1;
-    last_page();
-    function last_page() {
-        if (page != 1) {
-            page = page - 1;
-        }
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = requestCallback;
-        request.open("GET", "../proxy?page=" + page + "&num=15");
-        request.send();
-        function requestCallback() {
-            var jsondata = eval("(" + request.responseText + ")");
-            var items = jsondata.list;
-            var setHtml = "";
-            $("#ip-list").html(setHtml);
-            for (var i = 0; i < items.length; ++i) {
-                item = items[i];
-                setHtml += "<tr>\n<td>" + (i + 1) + "</td>\n";
-                setHtml += "<td>" + item.ip.toString() + "</td>\n";
-                setHtml += "<td>" + item.port.toString() + "</td>\n";
-                setHtml += "<td>" + item.time.toString() + "</td>\n</tr>\n";
-            }
-            $("#ip-list").html(setHtml);
-            document.getElementById("next-page").disabled = false;
-            if (page === 1) {
-                document.getElementById("last-page").disabled = true;
-            }
-        };
-    }
-    function next_page() {
-        page = page + 1;
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = requestCallback;
-        request.open("GET", "../proxy?page=" + page + "&num=15");
-        request.send();
-        function requestCallback() {
-            var jsondata = eval("(" + request.responseText + ")");
-            var items = jsondata.list;
-            var setHtml = "";
-            $("#ip-list").html(setHtml);
-            var i;
-            for (i = 0; i < items.length; ++i) {
-                item = items[i];
-                setHtml += "<tr>\n<td>" + (i + 1) + "</td>\n";
-                setHtml += "<td>" + item.ip.toString() + "</td>\n";
-                setHtml += "<td>" + item.port.toString() + "</td>\n";
-                setHtml += "<td>" + item.time.toString() + "</td>\n</tr>\n";
-            }
-            $("#ip-list").html(setHtml);
-            document.getElementById("last-page").disabled = false;
-            if (i < 15) {
-                document.getElementById("next-page").disabled = true;
-            }
-        };
-    }
-</script>
+<script src="../static/js/md5.js"></script>
+<script src="../static/js/proxy.js"></script>
 </html>
