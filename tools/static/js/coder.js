@@ -73,6 +73,35 @@ function getIpInfo() {
         }
     });
 }
+
+function hexConvert(convert_type) {
+    if (convert_type === 1) {
+        var hex_input_1 = document.getElementById('hex_input_1').value;
+        var hex_output_1 = document.getElementById('hex_output_1').value;
+        if (hex_input_1 !== '') {
+            document.getElementById('hex_output_1').value = Number(hex_input_1).toString(2);
+        } else {
+            document.getElementById('hex_input_1').value = parseInt(hex_output_1, 2);
+        }
+    } else if (convert_type === 2) {
+        var hex_input_2 = document.getElementById('hex_input_2').value;
+        var hex_output_2 = document.getElementById('hex_output_2').value;
+        if (hex_input_2 !== '') {
+            document.getElementById('hex_output_2').value = Number(hex_input_2).toString(8);
+        } else {
+            document.getElementById('hex_input_2').value = parseInt(hex_output_2, 8);
+        }
+    } else {
+        var hex_input_3 = document.getElementById('hex_input_3').value;
+        var hex_output_3 = document.getElementById('hex_output_3').value;
+        if (hex_input_3 !== '') {
+            document.getElementById('hex_output_3').value = Number(hex_input_3).toString(16);
+        } else {
+            document.getElementById('hex_input_3').value = parseInt(hex_output_3, 16);
+        }
+    }
+}
+
 Date.prototype.format = function (format) {
     var date = {
         "M+": this.getMonth() + 1,

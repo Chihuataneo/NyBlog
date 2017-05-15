@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 
-import tools.logic.logic_proxyip as proxyip
+from tools.logic import logic_proxyip
 from tools.logic.logic_coder import *
 
 
@@ -15,7 +15,7 @@ def proxy(request):
         timestamp = request.GET['t']
     except:
         return render(request, "proxy.html")
-    result = proxyip.get_proxy_ip(page, num, token, timestamp)
+    result = logic_proxyip.get_proxy_ip(page, num, token, timestamp)
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 

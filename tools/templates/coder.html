@@ -131,9 +131,37 @@
                 </h2>
                 <div class="form-inline">
                     <input type="text" class="form-control" id="ip_input" placeholder="IP" value="{{ client_ip }}">
-                    <span class="btn glyphicon glyphicon-arrow-right" onclick="getIpInfo();"
+                    <span class="btn glyphicon glyphicon-search" onclick="getIpInfo();"
                           aria-hidden="true"></span>
                     <span id="ip_info_text"></span>
+                </div>
+            </div>
+            <div class="bs-docs-section">
+                <h2 id="hex" class="page-header">
+                    <a class="anchorjs-link "
+                       style="font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"
+                       href="#hex"></a>
+                    进制转换
+                </h2>
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="hex_input_1" placeholder="十进制数">
+                    <span class="btn glyphicon glyphicon-resize-horizontal" onclick="hexConvert(1);"
+                          aria-hidden="true"></span>
+                    <input type="text" class="form-control" id="hex_output_1" placeholder="二进制数">
+                </div>
+                <br>
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="hex_input_2" placeholder="十进制数">
+                    <span class="btn glyphicon glyphicon-resize-horizontal" onclick="hexConvert(2);"
+                          aria-hidden="true"></span>
+                    <input type="text" class="form-control" id="hex_output_2" placeholder="八进制数">
+                </div>
+                <br>
+                <div class="form-inline">
+                    <input type="text" class="form-control" id="hex_input_3" placeholder="十进制数">
+                    <span class="btn glyphicon glyphicon-resize-horizontal" onclick="hexConvert(3);"
+                          aria-hidden="true"></span>
+                    <input type="text" class="form-control" id="hex_output_3" placeholder="十六进制数">
                 </div>
             </div>
         </div>
@@ -154,6 +182,9 @@
                     </li>
                     <li class="">
                         <a href="#ip_info">IPInfo</a>
+                    </li>
+                    <li class="">
+                        <a href="#hex">进制转换</a>
                     </li>
                 </ul>
                 <a class="back-to-top" href="#top">
