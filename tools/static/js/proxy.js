@@ -43,4 +43,4 @@ function get_proxy_ip(page, num, click_btn) {
     });
 }
 var page = 1;
-next_page();
+last_page();
