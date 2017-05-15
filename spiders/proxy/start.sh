@@ -1,2 +1,2 @@
 #!/bin/sh
-nohup python3 getproxies.py > log 2>&1 &
+nohup python3 proxypool.py > crawl_log 2>&1 &

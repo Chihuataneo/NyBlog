@@ -1,5 +1,6 @@
 from tools.models import ProxyIp
 import hashlib
+import time
 
 
 def select_ip(page, num):
@@ -14,7 +15,9 @@ def get_proxy_ip(page, num, token, timestamp):
     md5 = hashlib.md5()
     md5.update((page + num + timestamp).encode(encoding="utf-8"))
     md5_token = md5.hexdigest()
-    if (md5_token == token):
+    if (time.time() - float(timestamp) > 60):
+        items = []
+    elif (md5_token == token):
         try:
             items = select_ip(int(page), int(num))
         except:

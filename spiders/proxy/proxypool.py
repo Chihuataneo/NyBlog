@@ -5,10 +5,11 @@ import pymysql
 import json
 
 from proxy_spiders.spider_ipcn import SpiderIpcn
-from proxy_spiders.spider_mimvp import SpiderMimvp
-from proxy_spiders.spider_xicidaili import SpiderXicidaili
 from proxy_spiders.spider_66ip import SpiderIP66
 from proxy_spiders.spider_kxdaili import SpiderKxdaili
+from proxy_spiders.spider_89ip import SpiderIP89
+from proxy_spiders.spider_data5u import SpiderData5u
+from proxy_spiders.spider_ip181 import SpiderIP181
 
 
 class IsEnable(threading.Thread):
@@ -54,7 +55,7 @@ if __name__ == '__main__':
     user_data = json.load(f)
     f.close()
 
-    crawlers = [SpiderIP66, SpiderKxdaili, SpiderIpcn, SpiderMimvp]
+    crawlers = [SpiderIP66, SpiderKxdaili, SpiderIpcn, SpiderIP89, SpiderIP181, SpiderData5u]
     while True:
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
                                db=user_data['db'], port=user_data['port'], charset='utf8')
