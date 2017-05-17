@@ -45,21 +45,23 @@ class IsEnable(threading.Thread):
     def update(self):
         global cursor
         global conn
+        global update_ip_count
         try:
             date = get_current_time()
             cursor.execute("update tools_proxyip set time='%s' where ip='%s'" % (date, self.ip.split(':')[0]))
             conn.commit()
-            print('[%s][ProxyPool][Update]' % date, self.ip)
+            update_ip_count += 1
         except:
             pass
 
     def delete(self):
         global cursor
         global conn
+        global delete_ip_count
         try:
             cursor.execute("delete from tools_proxyip where ip='%s'" % (self.ip.split(':')[0]))
             conn.commit()
-            print('[%s][ProxyPool][Delete]' % get_current_time(), self.ip)
+            delete_ip_count += 1
         except:
             pass
 
@@ -89,10 +91,14 @@ if __name__ == '__main__':
     user_data = json.load(f)
     f.close()
     while True:
+        delete_ip_count = 0
+        update_ip_count = 0
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
                                db=user_data['db'], port=user_data['port'], charset='utf8')
         cursor = conn.cursor()
         verify()
+        print('[%s][Verify]Delete IP Count:' % get_current_time(), delete_ip_count)
+        print('[%s][Verify]Update IP Count:' % get_current_time(), update_ip_count)
         time.sleep(180)
         cursor.close()
         conn.commit()

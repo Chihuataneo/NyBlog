@@ -35,12 +35,13 @@ class IsEnable(threading.Thread):
     def insert_into_sql(self):
         global cursor
         global conn
+        global crawl_ip_count
         try:
             date = time.strftime('%Y-%m-%d %X', time.localtime())
             cursor.execute("insert into tools_proxyip(ip,port,time) values" + str(
                 (self.ip.split(':')[0], self.ip.split(':')[1], date)))
-            print('[%s][ProxyPool][Insert]' % date, self.ip)
             conn.commit()
+            crawl_ip_count += 1
         except:
             pass
 
@@ -57,6 +58,7 @@ if __name__ == '__main__':
 
     crawlers = [SpiderIP66, SpiderKxdaili, SpiderIpcn, SpiderIP89, SpiderIP181, SpiderData5u]
     while True:
+        crawl_ip_count = 0
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
                                db=user_data['db'], port=user_data['port'], charset='utf8')
         cursor = conn.cursor()
@@ -93,5 +95,6 @@ if __name__ == '__main__':
             pass
         cursor.close()
         conn.close()
+        print('[%s][ProxyPool]Crawl IP Count:' % get_current_time(), crawl_ip_count)
         print('[%s][ProxyPool][Sleeping]' % get_current_time())
         time.sleep(300)
