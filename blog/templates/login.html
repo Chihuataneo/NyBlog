@@ -120,14 +120,14 @@
     };
     $(function () {
         $("#verifycode").change(function () {
-            var inputcode = document.getElementById('verifycode').value
+            var inputcode = document.getElementById('verifycode').value;
             var request = new XMLHttpRequest();
             request.onreadystatechange = requestCallback;
             request.open("GET", "../verifycode?inputcode=" + inputcode);
             request.send();
             function requestCallback() {
                 status = request.responseText;
-                if (status == 'False') {
+                if (status === 'False') {
                     document.getElementById('verifycode').style.border = '1.5px solid red';
                 }
                 else {
