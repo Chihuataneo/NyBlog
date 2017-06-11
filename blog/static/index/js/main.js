@@ -81,9 +81,9 @@
 
             // Images (in the format of 'url': 'alignment').
             images: {
-                'http://cloud-1251736280.cossh.myqcloud.com/bg01.jpg': 'center',
-                'http://cloud-1251736280.cossh.myqcloud.com/bg02.jpg': 'center',
-                'http://cloud-1251736280.cossh.myqcloud.com/bg03.jpg': 'center'
+                'https://cloud-1251736280.cossh.myqcloud.com/bg01.jpg': 'center',
+                'https://cloud-1251736280.cossh.myqcloud.com/bg02.jpg': 'center',
+                'https://cloud-1251736280.cossh.myqcloud.com/bg03.jpg': 'center'
             },
 
             // Delay.
