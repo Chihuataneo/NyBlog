@@ -1,6 +1,7 @@
 from tools.models import ProxyIp
 import hashlib
 import time
+import base64
 
 
 def select_ip(page, num):
@@ -24,5 +25,22 @@ def get_proxy_ip(page, num, token, timestamp):
             items = []
     else:
         items = []
-    result = {"status": "true", "list": items}
+    encode_result = encode_str(str(items))
+    result = {"status": "true", "list": encode_result}
+    return result
+
+
+def from_char_code(a, *b):
+    return chr(a % 65536) + ''.join([chr(i % 65536) for i in b])
+
+
+def encode_str(string):
+    secret_key = 'nyloner'
+    key_length = len(secret_key)
+    string = base64.b64encode(string.encode('utf-8')).decode('utf-8')
+    code = ''
+    for i in range(len(string)):
+        index = i % key_length
+        code += from_char_code(ord(string[i]) ^ ord(secret_key[index]))
+    result = base64.b64encode(code.encode('utf-8')).decode('utf-8')
     return result
