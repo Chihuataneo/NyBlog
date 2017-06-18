@@ -330,14 +330,6 @@ def bookmarks(request):
                    'num': login_value['state']})
 
 
-def projects(request):
-    login_value = get_login_value(request)
-    return render(request, 'projects.html',
-                  {'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'],
-                   'num': login_value['state']})
-
-
 def verifycode(request):
     try:
         input_code = request.GET['inputcode']

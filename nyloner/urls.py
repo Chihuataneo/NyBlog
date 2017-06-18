@@ -37,7 +37,6 @@ urlpatterns = [
     url(r'^files', blog_views.files),
     url(r'^sharefile', blog_views.sharefile),
     url(r'^marks', blog_views.bookmarks),
-    url(r'^projects', blog_views.projects),
     url(r'^verifycode', blog_views.verifycode),
     url(r'^delete', blog_views.delete),
 
@@ -45,7 +44,6 @@ urlpatterns = [
     url(r'^publish', editor_views.publish),
 
     url(r'^proxy', tools_views.proxy),
-    url(r'^downloader', tools_views.downloader),
     url(r'^tools', tools_views.tools),
     url(r'^coder', tools_views.coder),
     url(r'^ipinfo', tools_views.tool_ip_query)
