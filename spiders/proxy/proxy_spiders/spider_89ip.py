@@ -17,7 +17,7 @@ def get_current_time():
 
 
 def crawl():
-    urls = ['http://www.89ip.cn/tiqu.php?sxb=&tqsl=1000&ports=&ktip=&xl=on&submit=%CC%E1++%C8%A1']
+    urls = ['http://www.89ip.cn/tiqv.php?sxb=&tqsl=300&ports=&ktip=&xl=on&submit=%CC%E1++%C8%A1']
     result = []
     for pageurl in urls:
         try:

@@ -18,7 +18,7 @@ def get_current_time():
 
 def crawl():
     urls = [
-        'http://www.66ip.cn/nmtq.php?getnum=600&isp=0&anonymoustype=3&start=&ports=&export=&ipaddress=&area=0&proxytype=0&api=66ip']
+        'http://www.66ip.cn/nmtq.php?getnum=600&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=0&proxytype=2&api=66ip']
     result = []
     for pageurl in urls:
         try:
