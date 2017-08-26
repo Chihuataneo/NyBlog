@@ -44,7 +44,7 @@ def home(request):
     categorys = get_category()
     books = get_books(1, 6)
     for book in books:
-        book['introduction'] = book['introduction'][:80] + "..."
+        book['introduction'] = book['introduction'][:60] + "..."
     return render(request, 'home.html',
                   {'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
                    'class': login_value['class_value'],
