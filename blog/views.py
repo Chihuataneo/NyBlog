@@ -97,8 +97,10 @@ def books(request):
         last_page = 1
     else:
         last_page = page - 1
-    next_page = page + 1
     books = get_books(page, num)
+    next_page = page + 1
+    if len(books) < num:
+        next_page = page
     for book in books:
         book['introduction'] = book['introduction'][:80] + "..."
     categorys = get_category()
@@ -123,8 +125,11 @@ def articles(request):
         last_page = 1
     else:
         last_page = page - 1
-    next_page = page + 1
     articles = get_articles(page, num)
+    if len(articles) < num:
+        next_page = page
+    else:
+        next_page = page + 1
     categorys = get_category()
     recent_books = get_books(1, 4)
     recent_articles = get_articles(1, 4)
@@ -206,6 +211,8 @@ def categorys(request):
                 result.append(articles[page * 3 + i + 1])
             except:
                 pass
+    if len(result) < 6:
+        next_page = page
     items = []
     for item in result:
         if 'imgurl' in item:
