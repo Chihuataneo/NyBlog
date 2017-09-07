@@ -18,10 +18,9 @@ def get_current_time():
 
 
 def crawl():
-    urls = ['https://proxy.coderbusy.com/classical/anonymous-type/highanonymous/p3.aspx']
     result = []
     for page in range(5):
-        url='https://proxy.coderbusy.com/classical/anonymous-type/highanonymous/p%s.aspx'%(page+1)
+        url = 'https://proxy.coderbusy.com/classical/anonymous-type/highanonymous/p%s.aspx' % (page + 1)
         try:
             html = requests.get(url, headers=headers, timeout=5).text
             table = BeautifulSoup(html, 'lxml').find('table', {'class': 'table-bordered'}).find_all('tr')
@@ -47,3 +46,7 @@ class SpiderCoderBusy(threading.Thread):
 
     def run(self):
         self.result = crawl()
+
+
+if __name__=='__main__':
+    crawl()
