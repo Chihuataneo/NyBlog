@@ -57,7 +57,7 @@ if __name__ == '__main__':
     user_data = json.load(f)
     f.close()
 
-    crawlers = [SpiderCoderBusy,SpiderIP66, SpiderXicidaili, SpiderIpcn, SpiderIP89, SpiderData5u]
+    crawlers = [SpiderCoderBusy,SpiderIP66,SpiderIpcn, SpiderIP89, SpiderData5u]
     while True:
         crawl_ip_count = 0
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
