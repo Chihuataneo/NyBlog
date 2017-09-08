@@ -1,0 +1,184 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Pingfang SC, Microsoft Yahei, Lato, Helvetica;
+    font-size: 12px;
+    font-weight: 300;
+    color: #333
+}
+
+* {
+    box-sizing: border-box
+}
+
+.image {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50%
+}
+
+.header {
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 10vw;
+    border-bottom: 1px solid #ddd;
+    background: hsla(0, 0%, 99%, .95);
+    display: flex;
+    justify-content: space-between
+}
+
+.header a.title {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 500
+}
+
+.header .items .item {
+    text-decoration: none;
+    color: #999;
+    font-size: 1.1rem;
+    padding: 5px 0;
+    margin: 0 15px;
+    border-bottom: 1px solid transparent;
+    transition: all .2s ease
+}
+
+.header .items .item:hover {
+    color: #333;
+    border-color: #333
+}
+
+.footer {
+    padding: 5vh 0;
+    text-align: center;
+    background: #f2f2f2;
+    font-size: 1.1rem
+}
+
+.resume {
+    padding: 10vh 2rem;
+    padding-top: calc(30px + 10vh);
+    background: #fafafa
+}
+
+.resume a {
+    color: #666;
+    text-decoration-color: #666
+}
+
+.resume .button-group {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+    text-align: center
+}
+
+.resume .button-group a.button {
+    margin: 0 10px;
+    color: #333;
+    font-size: 1.2rem
+}
+
+.resume .wrapper {
+    background: #fff;
+    max-width: 1000px;
+    padding: 5rem 3rem;
+    margin: 0 auto;
+    border-radius: 5px
+}
+
+.resume .info {
+    display: flex;
+    justify-content: space-between
+}
+
+.resume .info .name {
+    font-size: 3.5rem;
+    font-weight: 500
+}
+
+.resume .info .subtitle {
+    text-align: right;
+    line-height: 2.2rem;
+    font-size: 1.2rem;
+    color: #666
+}
+
+.resume .hr {
+    width: 100%;
+    border-top: 1px solid #eee;
+    margin: 20px 0 30px
+}
+
+.resume .block {
+    display: flex;
+    font-size: 1.3rem;
+    margin-top: 15px;
+    line-height: 2.5rem
+}
+
+.resume .block>.title {
+    width: 150px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    text-align: center;
+    font-weight: 500
+}
+
+.resume .block>.content {
+    color: #666;
+    padding: 0 3rem;
+    flex-grow: 1
+}
+
+.resume .block>.content b {
+    font-weight: 400
+}
+
+.resume .block>.content .right {
+    float: right
+}
+
+.resume .block>.content .title {
+    font-weight: 400
+}
+
+@media print {
+    .footer, .header {
+        display: none
+    }
+    .resume {
+        padding: 0
+    }
+    .resume .button-group {
+        display: none
+    }
+    .resume .wrapper {
+        padding: 0;
+        max-width: none
+    }
+    .resume .block {
+        font-size: 1.1rem;
+        margin-top: 10px;
+        line-height: 2rem
+    }
+    .resume .block>.title {
+        width: 60px
+    }
+    .resume .block>.content {
+        font-weight: 400
+    }
+    .resume .block ul {
+        margin: 5px 0
+    }
+}
+
+@page {
+    size: "A4"
+}

@@ -28,6 +28,3 @@ def decode_str(string):
     result = base64.b64decode(code).decode('utf-8')
     return result
 
-
-print(encode_str('test'))
-print(decode_str('Cj46FQokT1M='))
