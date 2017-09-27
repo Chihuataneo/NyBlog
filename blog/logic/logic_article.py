@@ -11,6 +11,12 @@ def get_articles(page, num):
         result.append(item)
     return result
 
+def get_recent_articles(num):
+    recent_articles = get_articles(1, num)
+    for article in recent_articles:
+        article['url'] = "../article?articleid=%s" % article['id']
+    return recent_articles
+
 
 def get_article(article_id):
     article = Article.objects.filter(id=article_id)[0]

@@ -1,0 +1,3 @@
+class BLOGSETTING():
+    UNLOGGED = 2
+    LOGGED = 1

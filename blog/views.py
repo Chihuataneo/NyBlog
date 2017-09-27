@@ -16,21 +16,22 @@ from blog.logic.logic_writefile import handle_uploaded_file
 from blog.models import Book
 from blog.models import File
 from blog.logic.logic_tools import get_tools
+from blog.logic.setting import BLOGSETTING
 
 
-def get_login_value(request):
-    value = {
+def get_logging_status(request):
+    status = {
         'name': "登录",
-        'url': "../login",
+        'url': "/login",
         'class_value': "button special",
-        'state': 2
+        'state': BLOGSETTING.UNLOGGED
     }
     if request.user.is_authenticated():
-        value['name'] = request.user.get_username()
-        value['url'] = "../user"
-        value['class_value'] = ""
-        value['state'] = 1
-    return value
+        status['name'] = request.user.get_username()
+        status['url'] = "/user"
+        status['class_value'] = ""
+        status['state'] = BLOGSETTING.LOGGED
+    return status
 
 
 def index(request):
@@ -39,24 +40,24 @@ def index(request):
 
 
 def home(request):
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     articles = get_articles(page=1, num=2)
     categorys = get_category()
     books = get_books(1, 6)
     for book in books:
         book['introduction'] = book['introduction'][:60] + "..."
     return render(request, 'home.html',
-                  {'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'],
-                   'num': login_value['state'], 'articles': articles, 'categorys': categorys, 'books': books})
+                  {'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
+                   'class': logging_status['class_value'],
+                   'num': logging_status['state'], 'articles': articles, 'categorys': categorys, 'books': books})
 
 
 def login_GET(request):
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     return render(request, 'login.html',
-                  {'tools': get_tools(), 'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'],
-                   'num': login_value['state']})
+                  {'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
+                   'class': logging_status['class_value'],
+                   'num': logging_status['state']})
 
 
 def login(request):
@@ -86,7 +87,7 @@ def blog_logout(request):
 
 
 def books(request):
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     try:
         page = int(request.GET['page'])
         num = int(request.GET['num'])
@@ -103,18 +104,19 @@ def books(request):
         next_page = page
     for book in books:
         book['introduction'] = book['introduction'][:80] + "..."
+
     categorys = get_category()
-    recent_books = get_books(1, 4)
-    recent_articles = get_articles(1, 4)
+    recent_books = get_recent_books(4)
+    recent_articles = get_recent_articles(4)
     return render(request, 'books.html',
                   {'recent_books': recent_books, 'recent_articles': recent_articles, 'tools': get_tools(),
-                   'tools': get_tools(), 'name': login_value['name'],
-                   'url': login_value['url'], 'class': login_value['class_value'], 'num': login_value['state'],
+                   'tools': get_tools(), 'name': logging_status['name'],
+                   'url': logging_status['url'], 'class': logging_status['class_value'], 'num': logging_status['state'],
                    'categorys': categorys, 'books': books, 'last_page': last_page, 'next_page': next_page})
 
 
 def articles(request):
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     try:
         page = int(request.GET['page'])
         num = int(request.GET['num'])
@@ -131,12 +133,14 @@ def articles(request):
     else:
         next_page = page + 1
     categorys = get_category()
-    recent_books = get_books(1, 4)
-    recent_articles = get_articles(1, 4)
+
+    recent_books = get_recent_books(4)
+    recent_articles = get_recent_articles(4)
+
     return render(request, 'articles.html',
                   {'recent_books': recent_books, 'recent_articles': recent_articles, 'tools': get_tools(),
-                   'tools': get_tools(), 'name': login_value['name'],
-                   'url': login_value['url'], 'class': login_value['class_value'], 'num': login_value['state'],
+                   'tools': get_tools(), 'name': logging_status['name'],
+                   'url': logging_status['url'], 'class': logging_status['class_value'], 'num': logging_status['state'],
                    'categorys': categorys, 'articles': articles, 'last_page': last_page, 'next_page': next_page})
 
 
@@ -145,16 +149,16 @@ def book(request):
         book_id = request.GET['bookid']
     except:
         return books(request)
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     item = get_book(book_id)
     item.number += 1
     item.save()
     book_dict = item.to_dict()
     book_dict['categorys'] = book_dict['category'].split(',')
     return render(request, 'book.html',
-                  {'book': book_dict, 'tools': get_tools(), 'tools': get_tools(), 'name': login_value['name'],
-                   'url': login_value['url'],
-                   'class': login_value['class_value'], 'num': login_value['state']})
+                  {'book': book_dict, 'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'],
+                   'url': logging_status['url'],
+                   'class': logging_status['class_value'], 'num': logging_status['state']})
 
 
 def article(request):
@@ -162,14 +166,14 @@ def article(request):
         article_id = request.GET['articleid']
     except:
         return articles(request)
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     item = get_article(article_id)
     article_dict = item.to_dict()
     article_dict['categorys'] = article_dict['category'].split(',')
     return render(request, 'article.html',
-                  {'article': article_dict, 'tools': get_tools(), 'tools': get_tools(), 'name': login_value['name'],
-                   'url': login_value['url'],
-                   'class': login_value['class_value'], 'num': login_value['state']})
+                  {'article': article_dict, 'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'],
+                   'url': logging_status['url'],
+                   'class': logging_status['class_value'], 'num': logging_status['state']})
 
 
 def article_content(request):
@@ -216,43 +220,41 @@ def categorys(request):
     items = []
     for item in result:
         if 'imgurl' in item:
-            item['url'] = "../book?bookid=%s" % item['id']
+            item['url'] = "/book?bookid=%s" % item['id']
         else:
-            item['url'] = "../article?articleid=%s" % item['id']
+            item['url'] = "/article?articleid=%s" % item['id']
         item['introduction'] = item['introduction'][:80] + "..."
         items.append(item)
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
+
     categorys = get_category()
-    recent_books = get_books(1, 4)
-    recent_articles = get_articles(1, 4)
+    recent_books = get_recent_books(4)
+    recent_articles = get_recent_articles(4)
     return render(request, 'categorys.html',
                   {'recent_books': recent_books, 'recent_articles': recent_articles, 'items': items,
                    'next_page': next_page, 'last_page': last_page, 'categorys': categorys, 'key': key,
-                   'tools': get_tools(), 'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'],
-                   'num': login_value['state']})
+                   'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
+                   'class': logging_status['class_value'],
+                   'num': logging_status['state']})
 
 
 def userinfor(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
+    logging_status = get_logging_status(request)
+    if logging_status['state'] == BLOGSETTING.UNLOGGED:
         return home(request)
-    books = get_books(1, 6)
-    for book in books:
-        book['url'] = "../book?bookid=%s" % book['id']
 
-    articles = get_articles(1, 6)
-    for article in articles:
-        article['url'] = "../article?articleid=%s" % article['id']
+    books = get_recent_books(6)
+    articles = get_recent_articles(6)
+
     return render(request, 'user.html',
-                  {'articles': articles, 'books': books, 'tools': get_tools(), 'name': login_value['name'],
-                   'url': login_value['url'],
-                   'class': login_value['class_value'], 'num': login_value['state']})
+                  {'articles': articles, 'books': books, 'tools': get_tools(), 'name': logging_status['name'],
+                   'url': logging_status['url'],
+                   'class': logging_status['class_value'], 'num': logging_status['state']})
 
 
 def uploadfile(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
+    logging_status = get_logging_status(request)
+    if logging_status['state'] == BLOGSETTING.UNLOGGED:
         return home(request)
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -262,13 +264,13 @@ def uploadfile(request):
     else:
         form = UploadFileForm()
     return render(request, 'uploadfile.html',
-                  {'form': form, 'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'], 'num': login_value['state']})
+                  {'form': form, 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
+                   'class': logging_status['class_value'], 'num': logging_status['state']})
 
 
 def files(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
+    logging_status = get_logging_status(request)
+    if logging_status['state'] == BLOGSETTING.UNLOGGED:
         return home(request)
     try:
         page = int(request.GET['page'])
@@ -282,8 +284,8 @@ def files(request):
     files = get_files(page)
     return render(request, 'files.html',
                   {'next_page': next_page, 'last_page': last_page, 'files': files, 'tools': get_tools(),
-                   'name': login_value['name'],
-                   'url': login_value['url'], 'class': login_value['class_value'], 'num': login_value['state']})
+                   'name': logging_status['name'],
+                   'url': logging_status['url'], 'class': logging_status['class_value'], 'num': logging_status['state']})
 
 
 def delete(request):
@@ -301,16 +303,16 @@ def delete(request):
 
 
 def revisepasswd(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
+    logging_status = get_logging_status(request)
+    if logging_status['state'] == BLOGSETTING.UNLOGGED:
         return home(request)
     return userinfor(request)
 
 
 def sharefile(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
-        return HttpResponseRedirect("../home")
+    logging_status = get_logging_status(request)
+    if logging_status['state'] == BLOGSETTING.UNLOGGED:
+        return HttpResponseRedirect("/home")
     if request.method == 'POST':
         form = ShareFileForm(request.POST)
         if form.is_valid():
@@ -321,20 +323,20 @@ def sharefile(request):
             book.introduction = form.cleaned_data['introduction']
             book.downloadurl = form.cleaned_data['downloadurl']
             book.save()
-            return HttpResponseRedirect("../user")
+            return HttpResponseRedirect("/user")
     else:
         form = ShareFileForm()
     return render(request, 'sharefile.html',
-                  {'form': form, 'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'], 'num': login_value['state']})
+                  {'form': form, 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
+                   'class': logging_status['class_value'], 'num': logging_status['state']})
 
 
 def bookmarks(request):
-    login_value = get_login_value(request)
+    logging_status = get_logging_status(request)
     return render(request, 'bookmarks.html',
-                  {'tools': get_tools(), 'name': login_value['name'], 'url': login_value['url'],
-                   'class': login_value['class_value'],
-                   'num': login_value['state']})
+                  {'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
+                   'class': logging_status['class_value'],
+                   'num': logging_status['state']})
 
 
 def verifycode(request):

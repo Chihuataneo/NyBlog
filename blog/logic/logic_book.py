@@ -25,3 +25,9 @@ def get_books_by_category(category):
             item['categorys'] = item['category'].split(',')
             result.append(item)
     return result
+
+def get_recent_books(num):
+    recent_books = get_books(1, num)
+    for book in recent_books:
+        book['url'] = "../book?bookid=%s" % book['id']
+    return recent_books
