@@ -18,7 +18,6 @@ from django.contrib import admin
 from blog import views as blog_views
 from tools import views as tools_views
 from editor import views as editor_views
-from about import  views as about_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -40,6 +39,7 @@ urlpatterns = [
     url(r'^marks', blog_views.bookmarks),
     url(r'^verifycode', blog_views.verifycode),
     url(r'^delete', blog_views.delete),
+    url(r'about',blog_views.about),
 
     url(r'^editor', editor_views.editor),
     url(r'^publish', editor_views.publish),
@@ -48,6 +48,4 @@ urlpatterns = [
     url(r'^tools', tools_views.tools),
     url(r'^coder', tools_views.coder),
     url(r'^ipinfo', tools_views.tool_ip_query),
-
-    url(r'about',about_views.about)
 ]
