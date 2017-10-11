@@ -353,3 +353,6 @@ def verifycode(request):
     request.session['verifycode'] = code
     img.save(mstream, "jpeg")
     return HttpResponse(mstream.getvalue(), content_type="image/jpeg")
+
+def about(request):
+    return render(request, "resume.html")
