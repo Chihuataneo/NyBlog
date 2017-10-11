@@ -6,8 +6,13 @@ from ratelimit.decorators import ratelimit
 from tools.logic import logic_proxyip
 from tools.logic.logic_coder import *
 
+def limit_rate(group,request):
+    if request.user.is_authenticated():
+        return None
+    else:
+        return '100/10m'
 
-@ratelimit(key='ip', rate='10/m')
+@ratelimit(key='ip', rate=limit_rate)
 def proxy(request):
     was_limited = getattr(request, 'limited', False)
     if was_limited:
