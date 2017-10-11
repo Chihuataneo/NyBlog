@@ -1,11 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from ratelimit.decorators import ratelimit
+
 from tools.logic import logic_proxyip
 from tools.logic.logic_coder import *
 
 
+@ratelimit(key='ip', rate='10/m')
 def proxy(request):
+    was_limited = getattr(request, 'limited', False)
+    if was_limited:
+        return HttpResponse(json.dumps({'status':False}), content_type="application/json")
+
     try:
         page = request.GET['page']
         num = request.GET['num']
