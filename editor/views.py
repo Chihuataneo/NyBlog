@@ -1,31 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.template.loader import render_to_string
-from django.contrib.auth import authenticate, login as auth_login, logout
 from blog.models import Article
-from markdown2 import markdown
-
-
-# Create your views here.
-def get_login_value(request):
-    value = {
-        'name': "登录",
-        'url': "../login",
-        'class_value': "button special",
-        'state': 2
-    }
-    if request.user.is_authenticated():
-        value['name'] = request.user.get_username()
-        value['url'] = "../user"
-        value['class_value'] = ""
-        value['state'] = 1
-    return value
+from blog.logic.logic_login import get_logging_status
+from blog.logic.setting import BLOGSETTING
 
 
 def editor(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
+    logging_status = get_logging_status(request)
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return HttpResponseRedirect("../home")
     return render(request, 'editor.html')
 
@@ -36,8 +18,8 @@ def append_script(html):
 
 
 def publish(request):
-    login_value = get_login_value(request)
-    if login_value['state'] == 2:
+    logging_status = get_logging_status(request)
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return HttpResponseRedirect("../home")
     if request.method == 'POST':
         article = Article()
