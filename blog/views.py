@@ -1,7 +1,6 @@
-import base64
 from io import BytesIO as StringIO
 
-from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -17,21 +16,7 @@ from blog.models import Book
 from blog.models import File
 from blog.logic.logic_tools import get_tools
 from blog.logic.setting import BLOGSETTING
-
-
-def get_logging_status(request):
-    status = {
-        'name': "登录",
-        'url': "/login",
-        'class_value': "button special",
-        'state': BLOGSETTING.UNLOGGED
-    }
-    if request.user.is_authenticated():
-        status['name'] = request.user.get_username()
-        status['url'] = "/user"
-        status['class_value'] = ""
-        status['state'] = BLOGSETTING.LOGGED
-    return status
+from blog.logic.logic_login import verify_login_values,get_logging_status
 
 
 def index(request):
@@ -47,38 +32,26 @@ def home(request):
     for book in books:
         book['introduction'] = book['introduction'][:60] + "..."
     return render(request, 'home.html',
-                  {'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
-                   'class': logging_status['class_value'],
-                   'num': logging_status['state'], 'articles': articles, 'categorys': categorys, 'books': books})
-
-
-def login_GET(request):
-    logging_status = get_logging_status(request)
-    return render(request, 'login.html',
-                  {'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
-                   'class': logging_status['class_value'],
-                   'num': logging_status['state']})
-
+                  {'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],
+                   'articles': articles,
+                   'categorys': categorys,
+                   'books': books})
 
 def login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        passwd = request.POST['password']
-        passwd = base64.b64decode(passwd)
-        code = request.POST['verifycode']
-        if code != request.session['verifycode']:
-            return login_GET(request)
-        user = authenticate(username=username, password=passwd)
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                return userinfor(request)
-            else:
-                return login_GET(request)
-        else:
-            return login_GET(request)
+    if request.method == 'POST' and verify_login_values(request):
+        return userinfor(request)
     else:
-        return login_GET(request)
+        logging_status = get_logging_status(request)
+        return render(request, 'login.html',
+                      {'tools': get_tools(),
+                       'username': logging_status['username'],
+                       'userurl': logging_status['userurl'],
+                       'btn_class_value': logging_status['btn_class_value'],
+                       'login_state': logging_status['login_state']})
 
 
 def blog_logout(request):
@@ -109,10 +82,17 @@ def books(request):
     recent_books = get_recent_books(4)
     recent_articles = get_recent_articles(4)
     return render(request, 'books.html',
-                  {'recent_books': recent_books, 'recent_articles': recent_articles, 'tools': get_tools(),
-                   'tools': get_tools(), 'name': logging_status['name'],
-                   'url': logging_status['url'], 'class': logging_status['class_value'], 'num': logging_status['state'],
-                   'categorys': categorys, 'books': books, 'last_page': last_page, 'next_page': next_page})
+                  {'recent_books': recent_books,
+                   'recent_articles': recent_articles,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],
+                   'categorys': categorys,
+                   'books': books,
+                   'last_page': last_page,
+                   'next_page': next_page})
 
 
 def articles(request):
@@ -138,10 +118,17 @@ def articles(request):
     recent_articles = get_recent_articles(4)
 
     return render(request, 'articles.html',
-                  {'recent_books': recent_books, 'recent_articles': recent_articles, 'tools': get_tools(),
-                   'tools': get_tools(), 'name': logging_status['name'],
-                   'url': logging_status['url'], 'class': logging_status['class_value'], 'num': logging_status['state'],
-                   'categorys': categorys, 'articles': articles, 'last_page': last_page, 'next_page': next_page})
+                  {'recent_books': recent_books,
+                   'recent_articles': recent_articles,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],
+                   'categorys': categorys,
+                   'articles': articles,
+                   'last_page': last_page,
+                   'next_page': next_page})
 
 
 def book(request):
@@ -156,9 +143,12 @@ def book(request):
     book_dict = item.to_dict()
     book_dict['categorys'] = book_dict['category'].split(',')
     return render(request, 'book.html',
-                  {'book': book_dict, 'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'],
-                   'url': logging_status['url'],
-                   'class': logging_status['class_value'], 'num': logging_status['state']})
+                  {'book': book_dict,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state']})
 
 
 def article(request):
@@ -171,9 +161,12 @@ def article(request):
     article_dict = item.to_dict()
     article_dict['categorys'] = article_dict['category'].split(',')
     return render(request, 'article.html',
-                  {'article': article_dict, 'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'],
-                   'url': logging_status['url'],
-                   'class': logging_status['class_value'], 'num': logging_status['state']})
+                  {'article': article_dict,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def article_content(request):
@@ -231,30 +224,41 @@ def categorys(request):
     recent_books = get_recent_books(4)
     recent_articles = get_recent_articles(4)
     return render(request, 'categorys.html',
-                  {'recent_books': recent_books, 'recent_articles': recent_articles, 'items': items,
-                   'next_page': next_page, 'last_page': last_page, 'categorys': categorys, 'key': key,
-                   'tools': get_tools(), 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
-                   'class': logging_status['class_value'],
-                   'num': logging_status['state']})
+                  {'recent_books': recent_books,
+                   'recent_articles': recent_articles,
+                   'items': items,
+                   'next_page': next_page,
+                   'last_page': last_page,
+                   'categorys': categorys,
+                   'key': key,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def userinfor(request):
     logging_status = get_logging_status(request)
-    if logging_status['state'] == BLOGSETTING.UNLOGGED:
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return home(request)
 
     books = get_recent_books(6)
     articles = get_recent_articles(6)
 
     return render(request, 'user.html',
-                  {'articles': articles, 'books': books, 'tools': get_tools(), 'name': logging_status['name'],
-                   'url': logging_status['url'],
-                   'class': logging_status['class_value'], 'num': logging_status['state']})
+                  {'articles': articles,
+                   'books': books,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def uploadfile(request):
     logging_status = get_logging_status(request)
-    if logging_status['state'] == BLOGSETTING.UNLOGGED:
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return home(request)
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -264,13 +268,17 @@ def uploadfile(request):
     else:
         form = UploadFileForm()
     return render(request, 'uploadfile.html',
-                  {'form': form, 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
-                   'class': logging_status['class_value'], 'num': logging_status['state']})
+                  {'form': form,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def files(request):
     logging_status = get_logging_status(request)
-    if logging_status['state'] == BLOGSETTING.UNLOGGED:
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return home(request)
     try:
         page = int(request.GET['page'])
@@ -283,9 +291,14 @@ def files(request):
     next_page = page + 1
     files = get_files(page)
     return render(request, 'files.html',
-                  {'next_page': next_page, 'last_page': last_page, 'files': files, 'tools': get_tools(),
-                   'name': logging_status['name'],
-                   'url': logging_status['url'], 'class': logging_status['class_value'], 'num': logging_status['state']})
+                  {'next_page': next_page,
+                   'last_page': last_page,
+                   'files': files,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def delete(request):
@@ -304,14 +317,14 @@ def delete(request):
 
 def revisepasswd(request):
     logging_status = get_logging_status(request)
-    if logging_status['state'] == BLOGSETTING.UNLOGGED:
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return home(request)
     return userinfor(request)
 
 
 def sharefile(request):
     logging_status = get_logging_status(request)
-    if logging_status['state'] == BLOGSETTING.UNLOGGED:
+    if logging_status['login_state'] == BLOGSETTING.UNLOGGED:
         return HttpResponseRedirect("/home")
     if request.method == 'POST':
         form = ShareFileForm(request.POST)
@@ -327,16 +340,22 @@ def sharefile(request):
     else:
         form = ShareFileForm()
     return render(request, 'sharefile.html',
-                  {'form': form, 'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
-                   'class': logging_status['class_value'], 'num': logging_status['state']})
+                  {'form': form,
+                   'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def bookmarks(request):
     logging_status = get_logging_status(request)
     return render(request, 'bookmarks.html',
-                  {'tools': get_tools(), 'name': logging_status['name'], 'url': logging_status['url'],
-                   'class': logging_status['class_value'],
-                   'num': logging_status['state']})
+                  {'tools': get_tools(),
+                   'username': logging_status['username'],
+                   'userurl': logging_status['userurl'],
+                   'btn_class_value': logging_status['btn_class_value'],
+                   'login_state': logging_status['login_state'],})
 
 
 def verifycode(request):
@@ -353,6 +372,7 @@ def verifycode(request):
     request.session['verifycode'] = code
     img.save(mstream, "jpeg")
     return HttpResponse(mstream.getvalue(), content_type="image/jpeg")
+
 
 def about(request):
     return render(request, "resume.html")

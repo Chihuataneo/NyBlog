@@ -34,10 +34,10 @@
                     </ul>
                 </li>
                 <li><a href="../marks">BookMarks</a></li>
-                <li><a href="{{ url }}" class="{{ class }}">{{ name }}</a>
-                    {% if num <= 1 %}
+                <li><a href="{{ userurl }}" class="{{ btn_class_value }}">{{ username }}</a>
+                    {% if login_state <= 1 %}
                         <ul>
-                            <li><a href="{{ url }}">个人中心</a></li>
+                            <li><a href="{{ userurl }}">个人中心</a></li>
                             <li><a href="../blog_logout">Logout</a></li>
                         </ul>
                     {% endif %}
