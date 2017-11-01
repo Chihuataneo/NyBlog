@@ -60,7 +60,7 @@ if __name__ == '__main__':
     f.close()
 
     crawlers = [SpiderMimvp, SpiderCoderBusy, SpiderIP66,
-                SpiderIP89, SpiderData5u, SpiderIP181, SpiderKxdaili]
+                SpiderIP89, SpiderData5u, SpiderIP181, SpiderKxdaili,SpiderXicidaili]
     while True:
         crawl_ip_count = 0
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
@@ -102,4 +102,4 @@ if __name__ == '__main__':
         print('[%s][ProxyPool]Crawl IP Count:' %
               get_current_time(), crawl_ip_count)
         print('[%s][ProxyPool][Sleeping]' % get_current_time())
-        time.sleep(300)
+        time.sleep(600)
