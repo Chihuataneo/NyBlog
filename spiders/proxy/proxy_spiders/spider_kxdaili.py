@@ -17,7 +17,8 @@ def get_current_time():
 
 
 def crawl():
-    urls = ['http://www.kxdaili.com/dailiip/1/%s.html', 'http://www.kxdaili.com/dailiip/3/%s.html']
+    urls = ['http://www.kxdaili.com/dailiip/1/%s.html',
+            'http://www.kxdaili.com/dailiip/2/%s.html']
     result = []
     for url in urls:
         page = 1
@@ -26,9 +27,11 @@ def crawl():
                 html = requests.get(url % (page), headers=headers, timeout=30).text.encode('ISO-8859-1').decode('utf-8',
                                                                                                                 'ignore')
                 page += 1
-                table = BeautifulSoup(html, 'lxml').find('table').find_all('tr')
+                table = BeautifulSoup(html, 'lxml').find(
+                    'tbody').find_all('tr')
             except Exception as e:
-                print('[%s][Spider][kxdaili]ERROR!' % get_current_time(), logging.log(e))
+                print('[%s][Spider][kxdaili]ERROR!' %
+                      get_current_time(), logging.exception(e))
                 continue
             for tr in table[1:]:
                 try:
@@ -37,8 +40,9 @@ def crawl():
                 except:
                     pass
                 result.append(ip)
-        time.sleep(3)
-    print('[%s][Spider][kxdaili]OK!' % get_current_time(), 'Crawled IP Count:', len(result))
+            time.sleep(1)
+    print('[%s][Spider][kxdaili]OK!' %
+          get_current_time(), 'Crawled IP Count:', len(result))
     return result
 
 

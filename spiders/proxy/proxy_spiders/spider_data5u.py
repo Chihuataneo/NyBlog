@@ -9,7 +9,7 @@ headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Encoding": "gzip, deflate",
     "Accept-Language": "en-US,en;q=0.5",
-    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/39.0"}
+    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/44.0"}
 
 
 def get_current_time():
@@ -18,12 +18,12 @@ def get_current_time():
 
 
 def crawl():
-    urls = ['http://www.data5u.com/']
+    urls = ['http://www.data5u.com/free/gngn/index.shtml','http://www.data5u.com/free/gwgn/index.shtml']
     result = []
     for url in urls:
         try:
-            html = requests.get(url, headers=headers, timeout=30).text
-            table = BeautifulSoup(html, 'lxml').find('div', {'class': 'wlist'}).find_all('ul', {"class": 'l2'})
+            html = requests.get(url, headers=headers, timeout=10).text
+            table = BeautifulSoup(html, 'lxml').find_all('ul', {"class": 'l2'})
         except Exception as e:
             print('[%s][Spider][data5u]Error:' % get_current_time(), logging.exception(e))
             continue

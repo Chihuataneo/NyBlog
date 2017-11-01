@@ -4,7 +4,6 @@ import time
 import pymysql
 import json
 
-from proxy_spiders.spider_ipcn import SpiderIpcn
 from proxy_spiders.spider_66ip import SpiderIP66
 from proxy_spiders.spider_kxdaili import SpiderKxdaili
 from proxy_spiders.spider_89ip import SpiderIP89
@@ -12,6 +11,8 @@ from proxy_spiders.spider_data5u import SpiderData5u
 from proxy_spiders.spider_ip181 import SpiderIP181
 from proxy_spiders.spider_xicidaili import SpiderXicidaili
 from proxy_spiders.spider_coderbusy import SpiderCoderBusy
+from proxy_spiders.spider_mimvp import SpiderMimvp
+
 
 class IsEnable(threading.Thread):
     def __init__(self, ip):
@@ -23,7 +24,8 @@ class IsEnable(threading.Thread):
 
     def run(self):
         try:
-            html = requests.get('http://httpbin.org/ip', proxies=self.proxies, timeout=5).text
+            html = requests.get('http://httpbin.org/ip',
+                                proxies=self.proxies, timeout=5).text
             result = eval(html)['origin']
             if len(result.split(',')) == 2:
                 return
@@ -57,7 +59,8 @@ if __name__ == '__main__':
     user_data = json.load(f)
     f.close()
 
-    crawlers = [SpiderCoderBusy,SpiderIP66,SpiderIpcn, SpiderIP89, SpiderData5u]
+    crawlers = [SpiderMimvp, SpiderCoderBusy, SpiderIP66,
+                SpiderIP89, SpiderData5u, SpiderIP181, SpiderKxdaili]
     while True:
         crawl_ip_count = 0
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
@@ -96,6 +99,7 @@ if __name__ == '__main__':
             pass
         cursor.close()
         conn.close()
-        print('[%s][ProxyPool]Crawl IP Count:' % get_current_time(), crawl_ip_count)
+        print('[%s][ProxyPool]Crawl IP Count:' %
+              get_current_time(), crawl_ip_count)
         print('[%s][ProxyPool][Sleeping]' % get_current_time())
         time.sleep(300)
