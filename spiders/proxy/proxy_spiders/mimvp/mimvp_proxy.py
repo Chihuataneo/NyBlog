@@ -20,22 +20,28 @@ def get_current_time():
 
 
 def mimvp_proxy():
-    urls = ['http://proxy.mimvp.com/free.php?proxy=in_hp', 'http://proxy.mimvp.com/free.php?proxy=out_hp',
-            'http://proxy.mimvp.com/free.php?proxy=in_tp', 'http://proxy.mimvp.com/free.php?proxy=out_tp']
+    urls = ['http://proxy.mimvp.com/free.php?proxy=in_hp'
+            , 'http://proxy.mimvp.com/free.php?proxy=out_hp'
+            ,'http://proxy.mimvp.com/free.php?proxy=in_tp'
+            , 'http://proxy.mimvp.com/free.php?proxy=out_tp']
     result = []
     imageRecognize = CaptchaRecognize()
     for url in urls:
         try:
             html = requests.get(url, headers=headers, timeout=30).text
-            table = BeautifulSoup(html, 'lxml').find('div', id='list').find('tbody')  # .find_all('tr')
+            table = BeautifulSoup(html, 'lxml').find(
+                'div', {'class': 'free-list'}).find('tbody')  # .find_all('tr')
         except Exception as e:
-            print('[%s][Spider][mimvp]Error!' % get_current_time(), logging.exception(e))
+            print('[%s][Spider][mimvp]Error!' %
+                  get_current_time(), logging.exception(e))
             continue
-        table = re.findall('(\d+\.\d+\.\d+\.\d+).*?img src="(.*?)"', str(table))
+        table = re.findall(
+            '(\d+\.\d+\.\d+\.\d+).*?img src="(.*?)"', str(table))
         for item in table:
             try:
                 ip = item[0]
-                imgurl = 'http://proxy.mimvp.com/' + item[1].replace('amp;', '')
+                imgurl = 'http://proxy.mimvp.com/' + \
+                    item[1].replace('amp;', '')
                 image = getimage(imgurl)
                 port_str_list = imageRecognize.recognise(image)
                 port = [item[1] for item in port_str_list]
@@ -43,7 +49,8 @@ def mimvp_proxy():
                 result.append(ip + ':' + port)
             except:
                 continue
-    print('[%s][Spider][mimvp]OK!' % get_current_time(), 'Crawled IP Count:', len(result))
+    print('[%s][Spider][mimvp]OK!' %
+          get_current_time(), 'Crawled IP Count:', len(result))
     return result
 
 
