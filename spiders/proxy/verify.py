@@ -99,7 +99,7 @@ if __name__ == '__main__':
         verify()
         print('[%s][Verify]Delete IP Count:' % get_current_time(), delete_ip_count)
         print('[%s][Verify]Update IP Count:' % get_current_time(), update_ip_count)
-        time.sleep(180)
+        time.sleep(300)
         cursor.close()
         conn.commit()
         conn.close()
