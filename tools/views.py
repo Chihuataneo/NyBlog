@@ -6,6 +6,7 @@ from ratelimit.decorators import ratelimit
 from tools.logic import logic_proxyip
 from tools.logic.logic_coder import *
 
+
 def limit_rate(group,request):
     if request.user.is_authenticated():
         return None
@@ -27,10 +28,6 @@ def proxy(request):
         return render(request, "proxy.html")
     result = logic_proxyip.get_proxy_ip(page, num, token, timestamp)
     return HttpResponse(json.dumps(result), content_type="application/json")
-
-
-def downloader(request):
-    return render(request, "downloader.html")
 
 
 def tools(request):
