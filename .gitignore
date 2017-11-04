@@ -6,3 +6,4 @@ settings.py
 updateimages.py
 collected_static
 mysql_setting.json
+.vscode

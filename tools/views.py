@@ -1,23 +1,25 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from ratelimit.decorators import ratelimit
 
 from tools.logic import logic_proxyip
 from tools.logic.logic_coder import *
+from tools.logic.logic_converter import *
 
 
-def limit_rate(group,request):
+def limit_rate(group, request):
     if request.user.is_authenticated():
         return None
     else:
         return '100/10m'
 
+
 @ratelimit(key='ip', rate=limit_rate)
 def proxy(request):
     was_limited = getattr(request, 'limited', False)
     if was_limited:
-        return HttpResponse(json.dumps({'status':False}), content_type="application/json")
+        return HttpResponse(json.dumps({'status': False}), content_type="application/json")
 
     try:
         page = request.GET['page']
@@ -50,3 +52,41 @@ def tool_ip_query(request):
         return HttpResponse(json.dumps(return_data), content_type="application/json")
     ip_info = get_ip_info(ip)
     return HttpResponse(json.dumps(ip_info), content_type="application/json")
+
+
+def converter(request):
+    return render(request, 'converter.html')
+
+
+def upload_doc(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('converter')
+    try:
+        file_data = request.FILES.get('file_data')
+        file_name = file_data.name
+        file_type = file_name.split('.')[-1]
+        session_key = request.session.session_key
+        with open('%s/%s.%s' % (CONVERTER_CONF['dest_dir'], session_key, file_type), 'wb') as f:
+            for chunk in file_data.chunks():
+                f.write(chunk)
+            f.close()
+        request.session['file_name'] = file_name
+        return HttpResponse(json.dumps({'status': 'OK'}), content_type="application/json")
+    except:
+        return HttpResponse(json.dumps({'status': 'False'}), content_type="application/json")
+
+
+def download_doc(request):
+    if request.method == 'GET':
+        try:
+            download_type = request.GET['type']
+        except:
+            return HttpResponseRedirect('converter')
+        if download_type not in CONVERTER_CONF['allowed_type']:
+            return HttpResponseRedirect('converter')
+        response = DOWNLOAD_FUNC[download_type](request)
+        if response == None:
+            return HttpResponseRedirect('converter')
+        return response
+    else:
+        return HttpResponseRedirect('converter')

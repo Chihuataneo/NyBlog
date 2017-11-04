@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>代理IP-零度</title>
+    <title>文档转换-零度</title>
     <link rel="icon" type="image/x-icon" href="http://nyloner.cn/static/images/head_img.png">
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/css/doc.min.css">
     <link href="data:text/css;charset=utf-8," data-href="../static/css/bootstrap-theme.min.css" rel="stylesheet"
           id="bs-theme-stylesheet">
+    <link href="../static/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css"/>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
@@ -43,24 +45,27 @@
     </div><!-- /.container-fluid -->
 </nav>
 <h3>
-    <p style="text-align:center">高匿代理</p>
+    <p style="text-align:center">文档转换</p>
 </h3>
 <div class="container">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th><label class="label label-warning">序号</label></th>
-            <th><label class="label label-warning">IP</label></th>
-            <th><label class="label label-warning">端口</label></th>
-            <th><label class="label label-warning">更新时间</label></th>
-        </tr>
-        </thead>
-        <tbody id="ip-list">
-        </tbody>
-    </table>
-    <div style="float:right">
-        <button type="button" id="last-page" class="btn btn-info" onclick="last_page();">上一页</button>
-        <button type="button" id="next-page" class="btn btn-info" onclick="next_page();">下一页</button>
+    <input id="input-file" type="file" class="file">
+    <p class="help-block">支持xls、xlsx、doc、docx格式，大小不超过3.0M</p>
+    <hr>
+    <div class="bs-glyphicons">
+        <ul class="bs-glyphicons-list">
+            <li>
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                <a class="glyphicon-class" href="/download_doc?type=pdf">下载PDF</a>
+            </li>
+            <li>
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                <a class="glyphicon-class" href="/download_doc?type=html">下载HTML</a>
+            </li>
+            <li>
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                <a class="glyphicon-class" href="/download_doc?type=png">下载PNG</a>
+            </li>
+        </ul>
     </div>
 </div>
 <footer class="bs-docs-footer">
@@ -75,7 +80,23 @@
 </body>
 <script src="../static/js/jquery.min.js"></script>
 <script src="../static/js/bootstrap.min.js"></script>
-<script src="../static/js/md5.js"></script>
-<script src="../static/js/proxy.js"></script>
-<script src="../static/js/base64.js"></script>
+<script src="../static/fileinput/js/fileinput.min.js"></script>
+<script type="text/javascript">
+    $("#input-file")
+        .fileinput({
+            language: "zh",
+            allowedFileExtensions: ['xlsx', 'xls', 'doc', 'docx'],
+            maxFileCount: 1,
+            maxFileSize: 3000,
+            uploadUrl: "upload_doc",
+            enctype: 'multipart/form-data'
+        })
+        .on("fileuploaded", function (event, data) {
+            if (data.response.status === 'OK') {
+
+            } else {
+                alert("上传文件失败！");
+            }
+        });
+</script>
 </html>
