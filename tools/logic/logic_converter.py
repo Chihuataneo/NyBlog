@@ -10,22 +10,21 @@ CONVERTER_CONF = {
 def convert_to_html(src_file):
     command = "libreoffice --headless --convert-to html --outdir %s %s" % (CONVERTER_CONF['dest_dir'], src_file)
     os.system(command)
-    file_path = src_file.replace('.' + src_file.split('.')[-1], 'html')
-    print(file_path)
+    file_path = src_file.replace('.' + src_file.split('.')[-1], '.html')
     return os.path.isfile(file_path)
 
 
 def doc_to_pdf(src_file):
     command = "libreoffice --headless --convert-to pdf --outdir %s %s" % (CONVERTER_CONF['dest_dir'], src_file)
     os.system(command)
-    file_path = src_file.replace('.' + src_file.split('.')[-1], 'pdf')
+    file_path = src_file.replace('.' + src_file.split('.')[-1], '.pdf')
     return os.path.isfile(file_path)
 
 
 def doc_to_image(src_file):
     command = "libreoffice --headless --convert-to png --outdir %s %s" % (CONVERTER_CONF['dest_dir'], src_file)
     os.system(command)
-    file_path = src_file.replace('.' + src_file.split('.')[-1], 'png')
+    file_path = src_file.replace('.' + src_file.split('.')[-1], '.png')
     return os.path.isfile(file_path)
 
 
@@ -33,7 +32,7 @@ def html_to_image(src_file):
     dest_file = src_file.replace('.html', '.png')
     command = "wkhtmltoimage %s %s" % (src_file, dest_file)
     os.system(command)
-    file_path = src_file.replace('.' + src_file.split('.')[-1], 'png')
+    file_path = src_file.replace('.' + src_file.split('.')[-1], '.png')
     return os.path.isfile(file_path)
 
 
@@ -41,7 +40,7 @@ def html_to_pdf(src_file):
     dest_file = src_file.replace('.html', '.pdf')
     command = "wkhtmltopdf %s %s" % (src_file, dest_file)
     os.system(command)
-    file_path = src_file.replace('.' + src_file.split('.')[-1], 'pdf')
+    file_path = src_file.replace('.' + src_file.split('.')[-1], '.pdf')
     return os.path.isfile(file_path)
 
 
