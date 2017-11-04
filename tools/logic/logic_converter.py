@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlencode
 from django.http import StreamingHttpResponse
 
 CONVERTER_CONF = {
@@ -82,7 +83,7 @@ def send_file(file_path,the_file_name):
 
     response = StreamingHttpResponse(file_iterator(file_path))
     response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(urlencode(the_file_name,'utf-8'))
 
     return response
 
