@@ -11,6 +11,7 @@ def convert_to_html(src_file):
     command = "libreoffice --headless --convert-to html --outdir %s %s" % (CONVERTER_CONF['dest_dir'], src_file)
     os.system(command)
     file_path = src_file.replace('.' + src_file.split('.')[-1], 'html')
+    print(file_path)
     return os.path.isfile(file_path)
 
 
