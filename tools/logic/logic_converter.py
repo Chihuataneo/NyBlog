@@ -84,6 +84,7 @@ def send_file(file_path,the_file_name):
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
 
+    print(the_file_name)
     return response
 
 
