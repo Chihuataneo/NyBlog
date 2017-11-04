@@ -71,18 +71,18 @@ def remove_file(file_path):
 
 def send_file(file_path):
     def file_iterator(file_path, chunk_size=512):
-        with open(file_path) as f:
+        with open(file_path,'rb') as f:
             while True:
                 c = f.read(chunk_size)
                 if c:
                     yield c
                 else:
                     break
-            remove_file(file_path)
+        remove_file(file_path)
 
     the_file_name = file_path.split('/')[-1]
 
-    response = StreamingHttpResponse(file_iterator(the_file_name))
+    response = StreamingHttpResponse(file_iterator(file_path))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
 
@@ -128,7 +128,7 @@ def download_png(request):
             return None
     else:
         return None
-    return send_file(src_file.replace('.' + file_type, '.pdf'))
+    return send_file(src_file.replace('.' + file_type, '.png'))
 
 
 def download_html(request):
