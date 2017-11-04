@@ -69,7 +69,7 @@ def remove_file(file_path):
     os.system(command)
 
 
-def send_file(file_path):
+def send_file(file_path,the_file_name):
     def file_iterator(file_path, chunk_size=512):
         with open(file_path,'rb') as f:
             while True:
@@ -79,8 +79,6 @@ def send_file(file_path):
                 else:
                     break
         remove_file(file_path)
-
-    the_file_name = file_path.split('/')[-1]
 
     response = StreamingHttpResponse(file_iterator(file_path))
     response['Content-Type'] = 'application/octet-stream'
@@ -107,7 +105,7 @@ def download_pdf(request):
             return None
     else:
         return None
-    return send_file(src_file.replace('.' + file_type, '.pdf'))
+    return send_file(src_file.replace('.' + file_type, '.pdf'),file_name.replace('.' + file_type, '.pdf'))
 
 
 def download_png(request):
@@ -128,7 +126,7 @@ def download_png(request):
             return None
     else:
         return None
-    return send_file(src_file.replace('.' + file_type, '.png'))
+    return send_file(src_file.replace('.' + file_type, '.png'),file_name.replace('.' + file_type, '.png'))
 
 
 def download_html(request):
@@ -142,7 +140,7 @@ def download_html(request):
     status = convert_to_html(src_file)
     if not status:
         return None
-    return send_file(src_file.replace('.' + file_type, '.html'))
+    return send_file(src_file.replace('.' + file_type, '.html'),file_name.replace('.' + file_type, '.html'))
 
 
 DOWNLOAD_FUNC = {
