@@ -123,7 +123,7 @@ def download_png(request):
         if not status:
             return None
     elif file_type == 'xls' or file_type == 'xlsx':
-        status = excel_to_pdf(src_file)
+        status = excel_to_image(src_file)
         if not status:
             return None
     else:
