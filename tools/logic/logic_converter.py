@@ -8,6 +8,11 @@ CONVERTER_CONF = {
 }
 
 
+def is_file_in_dest_dir(filename):
+    file_path = CONVERTER_CONF['dest_dir'] + '/' + filename
+    return os.path.isfile(file_path)
+
+
 def convert_to_html(src_file):
     command = "libreoffice --headless --convert-to html --outdir %s %s" % (CONVERTER_CONF['dest_dir'], src_file)
     os.system(command)
@@ -70,9 +75,9 @@ def remove_file(file_path):
     os.system(command)
 
 
-def send_file(file_path,the_file_name):
+def send_file(file_path, the_file_name):
     def file_iterator(file_path, chunk_size=512):
-        with open(file_path,'rb') as f:
+        with open(file_path, 'rb') as f:
             while True:
                 c = f.read(chunk_size)
                 if c:
@@ -83,7 +88,7 @@ def send_file(file_path,the_file_name):
 
     response = StreamingHttpResponse(file_iterator(file_path))
     response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(parse.quote(the_file_name,'utf-8'))
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(parse.quote(the_file_name, 'utf-8'))
 
     return response
 
@@ -94,8 +99,7 @@ def download_pdf(request):
     except:
         return None
     file_type = file_name.split('.')[-1]
-    session_key = request.session.session_key
-    src_file = '%s/%s.%s' % (CONVERTER_CONF['dest_dir'], session_key, file_type)
+    src_file = '%s/%s' % (CONVERTER_CONF['dest_dir'], file_name)
     if file_type == 'doc' or file_type == 'docx':
         status = doc_to_pdf(src_file)
         if not status:
@@ -106,7 +110,7 @@ def download_pdf(request):
             return None
     else:
         return None
-    return send_file(src_file.replace('.' + file_type, '.pdf'),file_name.replace('.' + file_type, '.pdf'))
+    return send_file(src_file.replace('.' + file_type, '.pdf'), file_name.replace('.' + file_type, '.pdf'))
 
 
 def download_png(request):
@@ -115,8 +119,7 @@ def download_png(request):
     except:
         return None
     file_type = file_name.split('.')[-1]
-    session_key = request.session.session_key
-    src_file = '%s/%s.%s' % (CONVERTER_CONF['dest_dir'], session_key, file_type)
+    src_file = '%s/%s' % (CONVERTER_CONF['dest_dir'], file_name)
     if file_type == 'doc' or file_type == 'docx':
         status = doc_to_image(src_file)
         if not status:
@@ -127,7 +130,7 @@ def download_png(request):
             return None
     else:
         return None
-    return send_file(src_file.replace('.' + file_type, '.png'),file_name.replace('.' + file_type, '.png'))
+    return send_file(src_file.replace('.' + file_type, '.png'), file_name.replace('.' + file_type, '.png'))
 
 
 def download_html(request):
@@ -136,12 +139,11 @@ def download_html(request):
     except:
         return None
     file_type = file_name.split('.')[-1]
-    session_key = request.session.session_key
-    src_file = '%s/%s.%s' % (CONVERTER_CONF['dest_dir'], session_key, file_type)
+    src_file = '%s/%s' % (CONVERTER_CONF['dest_dir'], file_name)
     status = convert_to_html(src_file)
     if not status:
         return None
-    return send_file(src_file.replace('.' + file_type, '.html'),file_name.replace('.' + file_type, '.html'))
+    return send_file(src_file.replace('.' + file_type, '.html'), file_name.replace('.' + file_type, '.html'))
 
 
 DOWNLOAD_FUNC = {

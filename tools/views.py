@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+import time
 
 from ratelimit.decorators import ratelimit
 
@@ -64,9 +65,9 @@ def upload_doc(request):
     try:
         file_data = request.FILES.get('file_data')
         file_name = file_data.name
-        file_type = file_name.split('.')[-1]
-        session_key = request.session.session_key
-        with open('%s/%s.%s' % (CONVERTER_CONF['dest_dir'], session_key, file_type), 'wb') as f:
+        if is_file_in_dest_dir(file_name):
+            file_name = str(int(time.time() * 1000)) + '_' + file_name
+        with open('%s/%s' % (CONVERTER_CONF['dest_dir'], file_name), 'wb') as f:
             for chunk in file_data.chunks():
                 f.write(chunk)
             f.close()
