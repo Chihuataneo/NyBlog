@@ -72,7 +72,13 @@ def upload_doc(request):
                 f.write(chunk)
             f.close()
         request.session['file_name'] = file_name
-        return HttpResponse(json.dumps({'status': 'OK'}), content_type="application/json")
+        
+        file_type = file_name.split('.')[-1]
+        supported_types = []
+        if file_type in CONVERTER_CONF['supported_types']:
+            supported_types = CONVERTER_CONF['supported_types'][file_type]
+        return HttpResponse(json.dumps({'status': 'OK', 'supported_types': supported_types}),
+                            content_type="application/json")
     except:
         return HttpResponse(json.dumps({'status': 'False'}), content_type="application/json")
 

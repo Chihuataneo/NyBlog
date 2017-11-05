@@ -49,21 +49,25 @@
 </h3>
 <div class="container">
     <input id="input-file" type="file" class="file">
-    <p class="help-block">支持xls、xlsx、doc、docx格式，大小不超过3.0M</p>
+    <p class="help-block">支持xls、xlsx、doc、docx,pdf格式，大小不超过5.0M</p>
     <hr>
     <div class="bs-glyphicons">
         <ul class="bs-glyphicons-list">
-            <li>
+            <li id="pdf">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                 <a class="glyphicon-class" href="/download_doc?type=pdf">下载PDF</a>
             </li>
-            <li>
+            <li id="html">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                 <a class="glyphicon-class" href="/download_doc?type=html">下载HTML</a>
             </li>
-            <li>
+            <li id="png">
                 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                 <a class="glyphicon-class" href="/download_doc?type=png">下载PNG</a>
+            </li>
+            <li id="txt">
+                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                <a class="glyphicon-class" href="/download_doc?type=txt">下载TXT</a>
             </li>
         </ul>
     </div>
@@ -85,15 +89,26 @@
     $("#input-file")
         .fileinput({
             language: "zh",
-            allowedFileExtensions: ['xlsx', 'xls', 'doc', 'docx'],
+            allowedFileExtensions: ['xlsx', 'xls', 'doc', 'docx', 'pdf'],
             maxFileCount: 1,
-            maxFileSize: 3000,
+            maxFileSize: 5000,
             uploadUrl: "upload_doc",
             enctype: 'multipart/form-data'
         })
         .on("fileuploaded", function (event, data) {
             if (data.response.status === 'OK') {
-
+                var supported_types = data.response.supported_types;
+                var elements_ids = ['pdf', 'html', 'png', 'txt'];
+                for (var index = 0; index < elements_ids.length; ++index) {
+                    var ID = elements_ids[index];
+                    var item = document.getElementById(ID);
+                    item.style.display = 'none';
+                }
+                for (index = 0; index < supported_types.length; ++index) {
+                    ID = supported_types[index];
+                    item = document.getElementById(ID);
+                    item.style.display = 'block';
+                }
             } else {
                 alert("上传文件失败！");
             }
