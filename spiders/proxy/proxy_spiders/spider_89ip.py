@@ -23,7 +23,7 @@ def crawl():
         try:
             html = requests.get(pageurl, headers=headers, timeout=30).text
         except Exception as e:
-            print('[%s][Spider][89ip]Error:' % get_current_time(), logging.exception(e))
+            print('[%s][Spider][89ip]Error:' % get_current_time(), e)
             continue
         ips = re.findall('\d+\.\d+\.\d+\.\d+:\d+', html)
         result += ips

@@ -32,8 +32,7 @@ def mimvp_proxy():
             table = BeautifulSoup(html, 'lxml').find(
                 'div', {'class': 'free-list'}).find('tbody')  # .find_all('tr')
         except Exception as e:
-            print('[%s][Spider][mimvp]Error!' %
-                  get_current_time(), logging.exception(e))
+            print('[%s][Spider][mimvp]Error!' % get_current_time(), e)
             continue
         table = re.findall(
             '(\d+\.\d+\.\d+\.\d+).*?img src="(.*?)"', str(table))

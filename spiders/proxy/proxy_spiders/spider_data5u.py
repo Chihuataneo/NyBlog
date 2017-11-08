@@ -25,7 +25,7 @@ def crawl():
             html = requests.get(url, headers=headers, timeout=10).text
             table = BeautifulSoup(html, 'lxml').find_all('ul', {"class": 'l2'})
         except Exception as e:
-            print('[%s][Spider][data5u]Error:' % get_current_time(), logging.exception(e))
+            print('[%s][Spider][data5u]Error:' % get_current_time(), e)
             continue
         for item in table[1:]:
             try:
