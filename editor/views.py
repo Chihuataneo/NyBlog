@@ -26,9 +26,13 @@ def publish(request):
         article.title = request.POST['title']
         article.category = request.POST['category']
         article.introduction = request.POST['description']
-        html = request.POST['markdown'].replace('&nbsp;', ' ').replace('\\n', '\n').replace('&lt;', '<').replace('&gt;',
-                                                                                                                 '>')
+        html = request.POST['html'].replace('&nbsp;', ' ').replace('\\n', '\n') \
+            .replace('&lt;', '<').replace('&gt;', '>')
         html = append_script(html)
+
+        markdown = request.POST['markdown'].replace('&nbsp;', ' ').replace('\\n', '\n') \
+            .replace('&lt;', '<').replace('&gt;', '>')
+        article.markdown = markdown
         article.content = html
         article.save()
         return HttpResponseRedirect("../user")

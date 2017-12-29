@@ -72,7 +72,7 @@ def upload_doc(request):
                 f.write(chunk)
             f.close()
         request.session['file_name'] = file_name
-        
+
         file_type = file_name.split('.')[-1]
         supported_types = []
         if file_type in CONVERTER_CONF['supported_types']:
