@@ -7,6 +7,7 @@ from ratelimit.decorators import ratelimit
 from tools.logic import logic_proxyip
 from tools.logic.logic_coder import *
 from tools.logic.logic_converter import *
+from tools.logger.tool_logger import tool_logger
 
 
 def limit_rate(group, request):
@@ -20,6 +21,8 @@ def limit_rate(group, request):
 def proxy(request):
     was_limited = getattr(request, 'limited', False)
     if was_limited:
+        ip_info = logic_proxyip.get_client_ip_info(request)
+        tool_logger.warning('Type:ratelimit\tMessage:' + json.dumps(ip_info))
         return HttpResponse(json.dumps({'status': False}), content_type="application/json")
 
     try:

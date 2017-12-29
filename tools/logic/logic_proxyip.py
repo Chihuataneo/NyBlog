@@ -44,3 +44,12 @@ def encode_str(string):
         code += from_char_code(ord(string[i]) ^ ord(secret_key[index]))
     result = base64.b64encode(code.encode('utf-8')).decode('utf-8')
     return result
+
+
+def get_client_ip_info(request):
+    remote_ip = request.META['REMOTE_ADDR']
+    forwarded_ip = request.META['HTTP_X_FORWARDED_FOR']
+    return {
+        'remote_ip': remote_ip,
+        'forwarded_ip': forwarded_ip
+    }
