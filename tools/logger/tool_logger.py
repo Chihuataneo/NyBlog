@@ -6,7 +6,7 @@ logger_name = "tool_logger"
 tool_logger = logging.getLogger(logger_name)
 tool_logger.setLevel(logging.INFO)
 
-log_path = "./log/limit.log"
+log_path = "./log/tool.log"
 fh = logging.FileHandler(log_path)
 fh.setLevel(logging.INFO)
 
