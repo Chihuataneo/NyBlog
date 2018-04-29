@@ -18,7 +18,7 @@ def get_current_time():
 
 
 def crawl():
-    urls = ['http://www.data5u.com/free/gngn/index.shtml','http://www.data5u.com/free/gwgn/index.shtml']
+    urls = ['http://www.data5u.com/free/gngn/index.shtml','http://www.data5u.com/free/gwgn/index.shtml','http://www.data5u.com/free/gnpt/index.shtml','http://www.data5u.com/free/gwpt/index.shtml']
     result = []
     for url in urls:
         try:

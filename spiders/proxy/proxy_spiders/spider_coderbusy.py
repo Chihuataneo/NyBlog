@@ -20,10 +20,10 @@ def get_current_time():
 def crawl():
     result = []
     for page in range(5):
-        url = 'https://proxy.coderbusy.com/classical/anonymous-type/highanonymous/p%s.aspx' % (page + 1)
+        url = 'https://proxy.coderbusy.com/classical/anonymous-type/highanonymous.aspx?page=%s' % (page + 1)
         try:
             html = requests.get(url, headers=headers, timeout=5).text
-            table = BeautifulSoup(html, 'lxml').find('table', {'class': 'table-bordered'}).find_all('tr')
+            table = BeautifulSoup(html, 'lxml').find('div', {'class': 'table-responsive'}).find_all('tr')
         except Exception as e:
             print('[%s][Spider][CoderBusy]Error:' % get_current_time(), e)
             continue
@@ -31,7 +31,7 @@ def crawl():
             try:
                 tds = item.find_all('td')
                 ip = tds[0].get_text()
-                port = tds[1].get_text()
+                port = tds[2].get_text()
             except:
                 continue
             line = ip + ':' + port

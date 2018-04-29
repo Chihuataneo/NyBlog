@@ -5,10 +5,8 @@ import pymysql
 import json
 
 from proxy_spiders.spider_66ip import SpiderIP66
-from proxy_spiders.spider_kxdaili import SpiderKxdaili
 from proxy_spiders.spider_89ip import SpiderIP89
 from proxy_spiders.spider_data5u import SpiderData5u
-from proxy_spiders.spider_ip181 import SpiderIP181
 from proxy_spiders.spider_xicidaili import SpiderXicidaili
 from proxy_spiders.spider_coderbusy import SpiderCoderBusy
 from proxy_spiders.spider_mimvp import SpiderMimvp
@@ -59,8 +57,13 @@ if __name__ == '__main__':
     user_data = json.load(f)
     f.close()
 
-    crawlers = [SpiderMimvp, SpiderCoderBusy, SpiderIP66,
-                SpiderIP89, SpiderData5u, SpiderIP181, SpiderKxdaili,SpiderXicidaili]
+    crawlers = [
+        SpiderCoderBusy,
+        SpiderIP66,
+        SpiderIP89,
+        SpiderData5u,
+        SpiderXicidaili
+    ]
     while True:
         crawl_ip_count = 0
         conn = pymysql.connect(host=user_data['host'], user=user_data['user'], passwd=user_data['passwd'],
