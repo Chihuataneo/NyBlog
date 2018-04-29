@@ -75,7 +75,7 @@
                                     {% for category in article.categorys %}
                                         <a href="../categorys?key={{ category }}">{{ category }}</a>
                                     {% endfor %}
-                                    | {{ article.pub_date }} | <img
+                                    | {{ article.pub_date|date:"Y-m-d H:i:s" }} | <img
                                         src="../static/images/read.png"> {{ article.number }} views</img></p>
                                 <p>{{ article.introduction }}</p>
                                 <p><a href="../article?articleid={{ article.id }}">查看更多</a><p>

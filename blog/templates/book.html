@@ -54,7 +54,7 @@
                     {% for category in book.categorys %}
                         <a href="../categorys?key={{ category }}">{{ category }}</a>
                     {% endfor %}
-                    | {{ book.pub_date }}| <img src="../static/images/read.png"> {{ book.number }} views</img></p>
+                    | {{ book.pub_date|date:"Y-m-d H:i:s" }}| <img src="../static/images/read.png"> {{ book.number }} views</img></p>
             </header>
             <!-- Content -->
             <div class="">

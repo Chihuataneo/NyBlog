@@ -98,7 +98,7 @@
                                     <tr>
                                         <td>{{ file.title }}</td>
                                         <td>{{ file.filename }}</td>
-                                        <td>{{ file.pub_date }}</td>
+                                        <td>{{ file.pub_date|date:"Y-m-d H:i:s" }}</td>
                                         <td>
                                             <a href="{{ file.downloadurl }}">下载</a>
                                         </td>

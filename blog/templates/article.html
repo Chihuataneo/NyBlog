@@ -54,7 +54,7 @@
                     {% for category in article.categorys %}
                         <a href="../categorys?key={{ category }}">{{ category }}</a>
                     {% endfor %}
-                    | {{ article.pub_date }} | <img src="../static/images/read.png"> {{ article.number }} views</img>
+                    | {{ article.pub_date|date:"Y-m-d H:i:s" }} | <img src="../static/images/read.png"> {{ article.number }} views</img>
                 </p>
             </header>
             <!-- Content -->
