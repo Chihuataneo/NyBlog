@@ -40,9 +40,7 @@ class VerifyIP(threading.Thread):
     def check_ip(self):
         res_data = requests.get('https://www.nyloner.cn/checkip',
                                 proxies=self.proxies, timeout=5).json()
-        print(res_data)
         if res_data['remote_ip'] in self.ip:
-            print(res_data)
             return True
         return False
 
