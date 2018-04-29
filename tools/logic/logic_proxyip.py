@@ -47,8 +47,12 @@ def encode_str(string):
 
 
 def get_client_ip_info(request):
-    remote_ip = request.META['REMOTE_ADDR']
-    forwarded_ip = request.META['HTTP_X_FORWARDED_FOR']
+    remote_ip = ''
+    forwarded_ip = ''
+    if 'REMOTE_ADDR' in request.META:
+        remote_ip = request.META['REMOTE_ADDR']
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        forwarded_ip = request.META['HTTP_X_FORWARDED_FOR']
     return {
         'remote_ip': remote_ip,
         'forwarded_ip': forwarded_ip

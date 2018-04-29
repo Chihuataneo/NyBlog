@@ -51,4 +51,5 @@ urlpatterns = [
     url(r'^converter', tools_views.converter),
     url(r'^upload_doc', tools_views.upload_doc),
     url(r'^download_doc', tools_views.download_doc),
+    url(r'^checkip', tools_views.check_ip),
 ]

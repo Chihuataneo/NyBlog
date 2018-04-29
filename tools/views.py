@@ -100,3 +100,17 @@ def download_doc(request):
         return response
     else:
         return HttpResponseRedirect('converter')
+
+
+def check_ip(request):
+    remote_ip = ''
+    forwarded_ip = ''
+    if 'REMOTE_ADDR' in request.META:
+        remote_ip = request.META['REMOTE_ADDR']
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        forwarded_ip = request.META['HTTP_X_FORWARDED_FOR']
+    info = {
+        'remote_ip': remote_ip,
+        'forwarded_ip': forwarded_ip
+    }
+    return HttpResponse(json.dumps(info), content_type="application/json")
