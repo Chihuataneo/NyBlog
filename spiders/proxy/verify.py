@@ -21,26 +21,30 @@ class VerifyIP(threading.Thread):
         super(VerifyIP, self).__init__()
         self.ip = ip
         self.proxies = {
-            'http': 'http://%s' % (ip)
+            'http': 'http://%s' % ip,
+            'https': 'http://%s' % ip
         }
 
     def run(self):
         try:
-            html = requests.get('http://httpbin.org/ip', proxies=self.proxies, timeout=3).text
-            result = eval(html)['origin']
-            if len(result.split(',')) == 2:
-                with lock:
-                    self.delete()
-                return
-            elif result in self.ip:
+            if self.check_ip():
                 with lock:
                     self.update()
             else:
                 with lock:
                     self.delete()
-        except:
+        except Exception as e:
             with lock:
                 self.delete()
+
+    def check_ip(self):
+        res_data = requests.get('https://www.nyloner.cn/checkip',
+                                proxies=self.proxies, timeout=5).json()
+        print(res_data)
+        if res_data['remote_ip'] in self.ip:
+            print(res_data)
+            return True
+        return False
 
     def update(self):
         global cursor
@@ -48,7 +52,8 @@ class VerifyIP(threading.Thread):
         global update_ip_count
         try:
             date = get_current_time()
-            cursor.execute("update tools_proxyip set time='%s' where ip='%s'" % (date, self.ip.split(':')[0]))
+            cursor.execute("update tools_proxyip set time='%s' where ip='%s'" % (
+                date, self.ip.split(':')[0]))
             conn.commit()
             update_ip_count += 1
         except:
@@ -59,7 +64,8 @@ class VerifyIP(threading.Thread):
         global conn
         global delete_ip_count
         try:
-            cursor.execute("delete from tools_proxyip where ip='%s'" % (self.ip.split(':')[0]))
+            cursor.execute("delete from tools_proxyip where ip='%s'" %
+                           (self.ip.split(':')[0]))
             conn.commit()
             delete_ip_count += 1
         except:
@@ -97,8 +103,10 @@ if __name__ == '__main__':
                                db=user_data['db'], port=user_data['port'], charset='utf8')
         cursor = conn.cursor()
         verify()
-        print('[%s][Verify]Delete IP Count:' % get_current_time(), delete_ip_count)
-        print('[%s][Verify]Update IP Count:' % get_current_time(), update_ip_count)
+        print('[%s][Verify]Delete IP Count:' %
+              get_current_time(), delete_ip_count)
+        print('[%s][Verify]Update IP Count:' %
+              get_current_time(), update_ip_count)
         time.sleep(300)
         cursor.close()
         conn.commit()

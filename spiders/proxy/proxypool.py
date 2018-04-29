@@ -10,6 +10,7 @@ from proxy_spiders.spider_data5u import SpiderData5u
 from proxy_spiders.spider_xicidaili import SpiderXicidaili
 from proxy_spiders.spider_coderbusy import SpiderCoderBusy
 from proxy_spiders.spider_mimvp import SpiderMimvp
+from proxy_spiders.spider_kuaidaili import SpiderKuaidaili
 
 
 class IsEnable(threading.Thread):
@@ -17,21 +18,25 @@ class IsEnable(threading.Thread):
         super(IsEnable, self).__init__()
         self.ip = ip
         self.proxies = {
-            'http': 'http://%s' % ip
+            'http': 'http://%s' % ip,
+            'https': 'http://%s' % ip
         }
 
     def run(self):
         try:
-            html = requests.get('http://httpbin.org/ip',
-                                proxies=self.proxies, timeout=5).text
-            result = eval(html)['origin']
-            if len(result.split(',')) == 2:
-                return
-            if result in self.ip:
+            if self.check_ip():
                 with lock:
                     self.insert_into_sql()
         except:
             return
+
+    def check_ip(self):
+        res_data = requests.get('https://www.nyloner.cn/checkip',
+                                proxies=self.proxies, timeout=5).json()
+        if res_data['remote_ip'] in self.ip:
+            print(res_data)
+            return True
+        return False
 
     def insert_into_sql(self):
         global cursor
@@ -62,7 +67,8 @@ if __name__ == '__main__':
         SpiderIP66,
         SpiderIP89,
         SpiderData5u,
-        SpiderXicidaili
+        SpiderXicidaili,
+        SpiderKuaidaili
     ]
     while True:
         crawl_ip_count = 0
