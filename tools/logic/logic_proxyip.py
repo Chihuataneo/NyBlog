@@ -2,6 +2,7 @@ from tools.models import ProxyIp
 import hashlib
 import time
 import base64
+import json
 
 
 def select_ip(page, num):
@@ -14,9 +15,9 @@ def select_ip(page, num):
 
 def get_proxy_ip(page, num, token, timestamp):
     md5 = hashlib.md5()
-    md5.update((page + num + timestamp).encode(encoding="utf-8"))
+    md5.update((page + num + str(timestamp)).encode(encoding="utf-8"))
     md5_token = md5.hexdigest()
-    if (time.time() - float(timestamp) > 60):
+    if (abs(time.time() - float(timestamp)) > 60):
         items = []
     elif (md5_token == token):
         try:
@@ -25,7 +26,7 @@ def get_proxy_ip(page, num, token, timestamp):
             items = []
     else:
         items = []
-    encode_result = encode_str(str(items))
+    encode_result = encode_str(json.dumps(items))
     result = {"status": "true", "list": encode_result}
     return result
 
@@ -57,3 +58,19 @@ def get_client_ip_info(request):
         'remote_ip': remote_ip,
         'forwarded_ip': forwarded_ip
     }
+
+
+def create_session_limit(request):
+    timestamp = time.time()
+    request.session['session_limit'] = timestamp
+
+
+def check_sesssion_limit(request):
+    try:
+        session_limit = request.session['session_limit']
+    except:
+        return False
+    timestamp = time.time()
+    if timestamp > session_limit + 30:
+        return False
+    return True

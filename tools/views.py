@@ -29,9 +29,13 @@ def proxy(request):
         page = request.GET['page']
         num = request.GET['num']
         token = request.GET['token']
-        timestamp = request.GET['t']
+        timestamp = int(request.GET['t'])
     except:
+        logic_proxyip.create_session_limit(request)
         return render(request, "proxy.html")
+    if not logic_proxyip.check_sesssion_limit(request):
+        return HttpResponse(json.dumps({'status': False, 'msg': 'emmm...继续努力！'}),
+                            content_type="application/json")
     result = logic_proxyip.get_proxy_ip(page, num, token, timestamp)
     return HttpResponse(json.dumps(result), content_type="application/json")
 

@@ -22,7 +22,7 @@ function decode_str(scHZjLUh1) {
     return Base64["\x64\x65\x63\x6f\x64\x65"](code)
 }
 
-function strToJson(str) {
+function str_to_json(str) {
     return (new Function("return " + str))();
 }
 
@@ -35,7 +35,7 @@ function get_proxy_ip(page, num, click_btn) {
             var setHtml = "";
             $("#ip-list").html(setHtml);
             var encode_str = result.list;
-            var items = strToJson(decode_str(encode_str));
+            var items = str_to_json(decode_str(encode_str));
             for (var index = 0; index < items.length; ++index) {
                 item = items[index];
                 setHtml += "<tr>\n<td>" + (index + 1) + "</td>\n";
@@ -59,5 +59,11 @@ function get_proxy_ip(page, num, click_btn) {
         }
     });
 }
+
+function refresh_page() {
+    history.go(0);
+}
+
 var page = 1;
 last_page();
+setInterval(refresh_page, 20000);
