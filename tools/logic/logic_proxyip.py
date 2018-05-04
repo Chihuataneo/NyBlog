@@ -3,6 +3,7 @@ import hashlib
 import time
 import base64
 import json
+import random
 
 
 def select_ip(page, num):
@@ -27,6 +28,23 @@ def get_proxy_ip(page, num, token, timestamp):
     else:
         items = []
     encode_result = encode_str(json.dumps(items))
+    result = {"status": "true", "list": encode_result}
+    return result
+
+
+def generate_junk_data():
+    ip_list = []
+    for i in range(15):
+        ip = '%s.%s.%s.%s' % (
+            random.randint(100, 200), random.randint(100, 200), random.randint(100, 200), random.randint(100, 200))
+        port = random.randint(1000, 30000)
+        format_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() - random.randint(20, 100)))
+        ip_list.append({
+            'ip': ip,
+            'port': port,
+            'time': format_time
+        })
+    encode_result = encode_str(json.dumps(ip_list))
     result = {"status": "true", "list": encode_result}
     return result
 
@@ -71,6 +89,6 @@ def check_sesssion_limit(request):
     except:
         return False
     timestamp = time.time()
-    if timestamp > session_limit + 30:
+    if timestamp > session_limit + 120:
         return False
     return True

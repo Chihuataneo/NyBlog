@@ -14,7 +14,7 @@ def limit_rate(group, request):
     if request.user.is_authenticated():
         return None
     else:
-        return '100/10m'
+        return '200/10m'
 
 
 @ratelimit(key='ip', rate=limit_rate)
@@ -23,7 +23,8 @@ def proxy(request):
     if was_limited:
         ip_info = logic_proxyip.get_client_ip_info(request)
         tool_logger.warning('Type:ratelimit\tMessage:' + json.dumps(ip_info))
-        return HttpResponse(json.dumps({'status': False}), content_type="application/json")
+        result = logic_proxyip.generate_junk_data()
+        return HttpResponse(json.dumps(result), content_type="application/json")
 
     try:
         page = request.GET['page']
@@ -33,9 +34,11 @@ def proxy(request):
     except:
         logic_proxyip.create_session_limit(request)
         return render(request, "proxy.html")
+
     if not logic_proxyip.check_sesssion_limit(request):
         return HttpResponse(json.dumps({'status': False, 'msg': 'emmm...'}),
                             content_type="application/json")
+
     result = logic_proxyip.get_proxy_ip(page, num, token, timestamp)
     return HttpResponse(json.dumps(result), content_type="application/json")
 
