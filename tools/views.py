@@ -11,7 +11,7 @@ from tools.logger.tool_logger import tool_logger
 
 
 def limit_rate(group, request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return None
     else:
         return '200/10m'
