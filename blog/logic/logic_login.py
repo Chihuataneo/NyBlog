@@ -10,7 +10,7 @@ def get_logging_status(request):
         'btn_class_value': "button special",
         'login_state': BLOGSETTING.UNLOGGED
     }
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         status['username'] = request.user.get_username()
         status['userurl'] = "/user"
         status['btn_class_value'] = ""
