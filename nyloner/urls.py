@@ -20,12 +20,12 @@ from tools import views as tools_views
 from editor import views as editor_views
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin', admin.site.urls),
     url(r'^$', blog_views.index),
-    url(r'^home/', blog_views.home),
-    url(r'^login/', blog_views.login),
-    url(r'^blog_logout/', blog_views.blog_logout),
-    url(r'^user/', blog_views.userinfor),
+    url(r'^home', blog_views.home),
+    url(r'^login', blog_views.login),
+    url(r'^blog_logout', blog_views.blog_logout),
+    url(r'^user', blog_views.userinfor),
     url(r'^articles', blog_views.articles),
     url(r'^books', blog_views.books),
     url(r'^article', blog_views.article),
