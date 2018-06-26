@@ -5,7 +5,7 @@ from blog.models import File
 
 def handle_uploaded_file(f, title):
     filename = f.name
-    files = os.listdir('collected_static/files')
+    files = os.listdir('static/files')
     if filename in files:
         filename = time.strftime("%Y%m%d_%H%M", time.localtime()) + '_' + filename
     uploadfile = File()
@@ -13,6 +13,6 @@ def handle_uploaded_file(f, title):
     uploadfile.downloadurl = '../static/files/%s' % (filename)
     uploadfile.filename = filename
     uploadfile.save()
-    with open('collected_static/files/%s' % filename, 'wb+') as destination:
+    with open('static/files/%s' % filename, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
